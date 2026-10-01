@@ -1,0 +1,2718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las 7 Habilidades de ChatGPT Work — Tutorial Interactivo</title>
+<style>
+:root{
+  --bg:#0a0e1a; --card:#0f172a; --accent:#1e3a5f; --accent-2:#38bdf8; --accent-3:#7dd3fc;
+  --text:#e2e8f0; --muted:#94a3b8; --border:#1e293b; --code-bg:#0b1120;
+  --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+  --shadow:0 10px 30px rgba(0,0,0,.45); --radius:14px;
+}
+body.light{
+  --bg:#eef2f7; --card:#ffffff; --accent:#dbeafe; --accent-2:#1d4ed8; --accent-3:#2563eb;
+  --text:#0f172a; --muted:#475569; --border:#cbd5e1; --code-bg:#f1f5f9;
+  --shadow:0 8px 24px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.65; -webkit-text-size-adjust:100%;
+  transition:background .25s ease,color .25s ease;
+}
+img,svg{max-width:100%;}
+a{color:var(--accent-2);}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 .6em;}
+h1{font-size:1.75rem;letter-spacing:-.02em;}
+h2{font-size:1.35rem;margin-top:1.6em;padding-bottom:.35em;border-bottom:1px solid var(--border);}
+h3{font-size:1.1rem;margin-top:1.3em;color:var(--accent-3);}
+h4{font-size:1rem;margin-top:1.1em;}
+p{margin:0 0 1em;}
+ul,ol{margin:0 0 1em;padding-left:1.35em;}
+li{margin:.3em 0;}
+strong{color:var(--text);}
+hr{border:none;border-top:1px solid var(--border);margin:1.8em 0;}
+
+.progress-bar{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:120;pointer-events:none;}
+.progress-bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .12s linear;}
+
+.app-header{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+body.light .app-header{background:rgba(255,255,255,.92);}
+.app-header-inner{max-width:1000px;margin:0 auto;padding:.55rem .8rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:.5rem;font-weight:800;font-size:.85rem;letter-spacing:.02em;color:var(--text);white-space:nowrap;}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 0 4px rgba(56,189,248,.18);animation:pulseDot 2.2s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 3px rgba(56,189,248,.18);}50%{box-shadow:0 0 0 8px rgba(56,189,248,.05);}}
+.toolbar{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;margin-left:auto;}
+.tool{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:.34rem .55rem;font-size:.78rem;font-weight:600;cursor:pointer;transition:.18s;line-height:1;white-space:nowrap;}
+.tool:hover{border-color:var(--accent-2);color:var(--accent-2);}
+.tool:active{transform:scale(.96);}
+.search-wrap{position:relative;flex:1 1 140px;min-width:120px;max-width:260px;}
+.search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:.42rem .6rem .42rem 1.7rem;font-size:.8rem;outline:none;}
+.search-wrap input:focus{border-color:var(--accent-2);}
+.search-wrap::before{content:"⌕";position:absolute;left:.5rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:1rem;pointer-events:none;}
+.search-count{position:absolute;right:.5rem;top:50%;transform:translateY(-50%);font-size:.68rem;color:var(--muted);pointer-events:none;}
+
+.tabs{position:sticky;top:47px;z-index:99;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tabs-inner{max-width:1000px;margin:0 auto;display:flex;gap:.25rem;padding:.45rem .6rem;min-width:max-content;}
+.tab{background:transparent;border:1px solid transparent;color:var(--muted);border-radius:9px;padding:.42rem .78rem;font-size:.78rem;font-weight:700;letter-spacing:.03em;cursor:pointer;white-space:nowrap;transition:.18s;font-family:inherit;}
+.tab:hover{color:var(--text);background:var(--card);}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent-2);box-shadow:0 0 0 1px rgba(56,189,248,.35),0 6px 18px rgba(30,58,95,.45);}
+body.light .tab.active{color:#fff;}
+
+main{max-width:1000px;margin:0 auto;padding:1.1rem .85rem 5rem;}
+.panel{display:none;animation:fade .28s ease;}
+.panel.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.print-only{display:none;}
+
+.svg-hero{display:block;width:100%;max-width:540px;height:auto;margin:.2rem auto 1.1rem;}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.05rem;margin:0 0 1rem;box-shadow:var(--shadow);}
+.card.tight{padding:.8rem .9rem;}
+.grid{display:grid;gap:.8rem;grid-template-columns:1fr;}
+@media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr;}.grid.three{grid-template-columns:1fr 1fr 1fr;}}
+.mini{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent-2);border-radius:10px;padding:.75rem .85rem;}
+.mini h4{margin:0 0 .3em;font-size:.92rem;}
+.mini p{margin:0;font-size:.86rem;color:var(--muted);}
+
+.box{border-radius:12px;padding:.85rem 1rem;margin:0 0 1rem;border:1px solid var(--border);border-left-width:4px;background:var(--card);font-size:.92rem;}
+.box p:last-child{margin-bottom:0;}
+.box .box-title{display:block;font-weight:800;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem;}
+.box.info{border-left-color:var(--accent-2);}
+.box.info .box-title{color:var(--accent-2);}
+.box.ok{border-left-color:var(--ok);}
+.box.ok .box-title{color:var(--ok);}
+.box.warn{border-left-color:var(--warn);}
+.box.warn .box-title{color:var(--warn);}
+.box.bad{border-left-color:var(--bad);}
+.box.bad .box-title{color:var(--bad);}
+
+.steps{counter-reset:st;list-style:none;padding:0;margin:0 0 1rem;}
+.steps > li{counter-increment:st;position:relative;padding:.7rem .9rem .7rem 3rem;margin:.55rem 0;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+.steps > li::before{content:counter(st);position:absolute;left:.75rem;top:.72rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-size:.82rem;font-weight:800;display:flex;align-items:center;justify-content:center;border:1px solid var(--accent-2);}
+.steps > li strong{display:block;margin-bottom:.15rem;}
+.steps > li .why{display:block;font-size:.83rem;color:var(--muted);margin-top:.3rem;}
+.steps > li .why::before{content:"Por qué: ";font-weight:700;color:var(--accent-2);}
+
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--border);margin:0 0 1rem;background:var(--card);}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:520px;}
+th,td{padding:.6rem .7rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;}
+th{background:var(--accent);color:#fff;font-weight:700;font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover{background:rgba(56,189,248,.05);}
+td code{font-size:.8rem;}
+
+.code-wrap{position:relative;margin:0 0 1rem;border-radius:12px;border:1px solid var(--border);background:var(--code-bg);overflow:hidden;}
+.code-wrap .code-head{display:flex;align-items:center;justify-content:space-between;padding:.4rem .6rem;background:var(--accent);border-bottom:1px solid var(--border);}
+.code-wrap .code-head span{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;}
+.copyBtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:7px;padding:.3rem .6rem;font-size:.72rem;font-weight:800;letter-spacing:.05em;cursor:pointer;transition:.18s;font-family:inherit;min-height:32px;}
+.copyBtn:hover{background:rgba(255,255,255,.26);}
+.copyBtn.copied,.copyBtn.done{background:var(--ok);border-color:var(--ok);}
+pre{margin:0;padding:.85rem .9rem;overflow-x:auto;font-size:.78rem;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word;}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;}
+p code,li code,td code{background:var(--code-bg);border:1px solid var(--border);border-radius:5px;padding:.08em .35em;font-size:.85em;color:var(--accent-3);}
+
+details{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.2rem .9rem;margin:0 0 .7rem;}
+details[open]{padding-bottom:.7rem;}
+summary{cursor:pointer;font-weight:700;padding:.65rem 0;list-style:none;display:flex;align-items:center;gap:.5rem;color:var(--text);font-size:.92rem;}
+summary::-webkit-details-marker{display:none;}
+summary::before{content:"＋";color:var(--accent-2);font-weight:800;font-size:1rem;flex-shrink:0;}
+details[open] summary::before{content:"−";}
+
+.checklist{list-style:none;padding:0;margin:0 0 1rem;}
+.checklist li{margin:.4rem 0;}
+.check{display:flex;align-items:flex-start;gap:.6rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.6rem .75rem;cursor:pointer;font-size:.88rem;transition:.18s;}
+.check:hover{border-color:var(--accent-2);}
+.check input{margin:.2rem 0 0;width:1.05rem;height:1.05rem;accent-color:var(--accent-2);flex-shrink:0;cursor:pointer;}
+.check input:checked + span{color:var(--muted);text-decoration:line-through;}
+.check span{flex:1;}
+.check-progress{display:flex;align-items:center;gap:.6rem;margin:0 0 1rem;font-size:.82rem;color:var(--muted);}
+.check-progress .bar{flex:1;height:8px;border-radius:99px;background:var(--border);overflow:hidden;}
+.check-progress .bar > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent-2),var(--ok));transition:width .3s ease;}
+
+mark.search-hl{background:#fde047;color:#111;border-radius:3px;padding:0 .1em;}
+
+.to-top{position:fixed;right:1rem;bottom:1rem;width:44px;height:44px;border-radius:50%;background:var(--accent);border:1px solid var(--accent-2);color:#fff;font-size:1.1rem;font-weight:800;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:var(--shadow);z-index:90;transition:.2s;}
+.to-top.show{display:flex;}
+.to-top:hover{transform:translateY(-3px);}
+
+.tag{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.16rem .5rem;border-radius:99px;border:1px solid var(--border);background:var(--accent);color:#fff;vertical-align:middle;}
+.tag.pre{background:#7c2d12;border-color:#ea580c;}
+.tag.per{background:#1e3a5f;border-color:var(--accent-2);}
+.tag.plu{background:#3b0764;border-color:#a855f7;}
+.tag.easy{background:#14532d;border-color:var(--ok);}
+.tag.mid{background:#78350f;border-color:var(--warn);}
+.tag.hard{background:#7f1d1d;border-color:var(--bad);}
+
+.credit-hero{text-align:center;padding:1rem 0 .4rem;}
+.credit-name{font-size:2.1rem;font-weight:900;letter-spacing:-.03em;line-height:1.1;background:linear-gradient(100deg,var(--accent-2),var(--accent-3),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:.2rem 0 .1rem;word-break:break-word;}
+body.light .credit-name{background:none;color:var(--accent-2);-webkit-text-fill-color:var(--accent-2);}
+.credit-role{font-size:1rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+.credit-date{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.86rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.5rem .9rem;color:var(--accent-3);}
+
+.src-list{list-style:none;padding:0;}
+.src-list li{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem;margin:0 0 .6rem;font-size:.88rem;}
+.src-list li strong{display:block;margin-bottom:.15rem;}
+.url{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;word-break:break-all;color:var(--accent-2);}
+
+.vs{display:grid;gap:.7rem;grid-template-columns:1fr;margin:0 0 1rem;}
+@media(min-width:640px){.vs{grid-template-columns:1fr 1fr;}}
+.vs .bad-side,.vs .good-side{border-radius:12px;padding:.8rem .9rem;font-size:.87rem;border:1px solid var(--border);}
+.vs .bad-side{background:rgba(239,68,68,.07);border-left:4px solid var(--bad);}
+.vs .good-side{background:rgba(34,197,94,.07);border-left:4px solid var(--ok);}
+.vs h4{margin:0 0 .4rem;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;}
+.vs .bad-side h4{color:var(--bad);}
+.vs .good-side h4{color:var(--ok);}
+.vs p:last-child{margin-bottom:0;}
+
+/* ===== PROMPTS ===== */
+.prompt-index{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.05rem;margin:0 0 1.4rem;box-shadow:var(--shadow);}
+.prompt-index h2{margin-top:0;border-bottom:1px solid var(--border);padding-bottom:.4em;font-size:1.1rem;}
+.prompt-index ol{list-style:none;padding:0;margin:0;display:grid;gap:.4rem;grid-template-columns:1fr;}
+@media(min-width:640px){.prompt-index ol{grid-template-columns:1fr 1fr;}}
+.prompt-index a{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--text);text-decoration:none;font-size:.86rem;line-height:1.35;transition:.18s;min-height:44px;}
+.prompt-index a:hover,.prompt-index a:focus{border-color:var(--accent-2);color:var(--accent-2);background:rgba(56,189,248,.07);outline:none;}
+.prompt-index a::before{content:"→";color:var(--accent-2);font-weight:800;flex-shrink:0;}
+.prompt-index .pi-cat{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:1rem 0 .35rem;grid-column:1 / -1;}
+.prompt-index .pi-cat:first-child{margin-top:0;}
+
+.promptCard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.05rem 1.1rem;margin:0 0 1.3rem;box-shadow:var(--shadow);scroll-margin-top:120px;}
+.promptCard > h3{margin-top:0;color:var(--accent-3);font-size:1.05rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.promptCard .prompt-meta{font-size:.88rem;color:var(--muted);margin:0 0 .5rem;}
+.promptCard .prompt-meta strong{color:var(--text);font-weight:700;}
+.promptBox{position:relative;margin:.7rem 0 0;border-radius:12px;border:1px solid var(--border);background:var(--code-bg);overflow:hidden;}
+.promptBox-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.4rem .6rem;background:var(--accent);border-bottom:1px solid var(--border);}
+.promptBox-head span{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;}
+.promptBody{margin:0;padding:.85rem .9rem;overflow-x:auto;-webkit-overflow-scrolling:touch;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:.8rem;line-height:1.6;color:var(--text);white-space:pre;tab-size:2;max-width:100%;}
+@media(max-width:520px){.promptBody{font-size:.75rem;}}
+.promptCard .copyBtn{min-height:36px;padding:.4rem .75rem;font-size:.72rem;}
+@media(max-width:520px){.promptCard .copyBtn{min-height:44px;padding:.5rem .9rem;font-size:.75rem;}}
+
+/* ===== EJERCICIOS ===== */
+.ejercicio{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.05rem 1.1rem;margin:0 0 1.3rem;box-shadow:var(--shadow);scroll-margin-top:120px;}
+.ejercicio h3{margin-top:0;color:var(--accent-3);font-size:1.02rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.ejercicio .meta{font-size:.78rem;color:var(--muted);margin:0 0 .7rem;letter-spacing:.02em;}
+.ejercicio .enunciado{background:var(--code-bg);border:1px solid var(--border);border-radius:12px;padding:.75rem .9rem;margin:0 0 .8rem;font-size:.9rem;}
+.ejercicio .enunciado strong:first-child{color:var(--accent-2);}
+.ejercicio .opciones{list-style:none;padding:0;margin:.5rem 0 .8rem;}
+.ejercicio .opciones li{background:var(--code-bg);border:1px solid var(--border);border-radius:9px;padding:.5rem .75rem;margin:.3rem 0;font-size:.88rem;}
+.ejercicio details{background:transparent;border:1px solid var(--border);border-radius:12px;padding:.2rem .9rem;margin:0;}
+.ejercicio details[open]{background:rgba(56,189,248,.04);}
+.ejercicio details > summary{font-size:.88rem;}
+.ejercicio details .solucion-body{padding-top:.2rem;}
+
+/* ===== PRINT ===== */
+@media print{
+  @page{ size:A4 portrait; margin:14mm 12mm; }
+  html,body{background:#fff !important;color:#000 !important;padding:0 !important;margin:0 !important;font-size:11pt !important;line-height:1.45 !important;}
+  .app-header,.tabs,.toolbar,.to-top,.copyBtn,.progress-bar,.svg-hero,nav,.search-hl,.sprite,.no-print,.search-wrap{ display:none !important; }
+  main{max-width:none !important;padding:0 !important;margin:0 !important;}
+  .panel{display:block !important;page-break-after:auto !important;animation:none !important;margin:0 0 10mm 0 !important;}
+  .panel::after{content:"";display:block;border-top:1px dashed #bbb;margin-top:6mm;}
+  .print-only{display:block !important;font-size:10pt !important;letter-spacing:.12em;text-transform:uppercase;color:#555 !important;border-bottom:1px solid #999 !important;padding-bottom:2mm;margin:0 0 4mm 0 !important;}
+  .card,.mini,.box,.steps > li,.src-list li,.check,details,.code-wrap,.vs .bad-side,.vs .good-side,.prompt-index,.promptCard,.promptBox,.ejercicio{background:#fff !important;color:#000 !important;border:1px solid #999 !important;box-shadow:none !important;break-inside:avoid;page-break-inside:avoid;}
+  .mini{border-left:3px solid #333 !important;}
+  .box{border-left:3px solid #333 !important;}
+  .box .box-title{color:#000 !important;}
+  .steps > li::before{background:#333 !important;color:#fff !important;border-color:#333 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .table-wrap{overflow:visible !important;border:1px solid #999 !important;border-radius:0 !important;background:#fff !important;}
+  table{min-width:0 !important;width:100% !important;font-size:9.5pt !important;page-break-inside:auto;}
+  thead{display:table-header-group;}
+  tr{page-break-inside:avoid;}
+  th{background:#d9d9d9 !important;color:#000 !important;border:1px solid #999 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  td{background:#fff !important;color:#000 !important;border:1px solid #bbb !important;}
+  .code-wrap .code-head,.promptBox-head{background:#e5e5e5 !important;border-bottom:1px solid #999 !important;}
+  .code-wrap .code-head span,.promptBox-head span{color:#000 !important;}
+  pre,.promptBody{overflow:visible !important;white-space:pre-wrap !important;word-break:break-word !important;background:#f5f5f5 !important;color:#000 !important;font-size:9pt !important;border:none !important;}
+  p code,li code,td code{background:#f0f0f0 !important;color:#000 !important;border:1px solid #bbb !important;}
+  .prompt-index a{border:1px solid #999 !important;color:#000 !important;background:#fff !important;}
+  .prompt-index a::before{color:#000 !important;}
+  details{display:block !important;}
+  details > summary{color:#000 !important;font-weight:800;}
+  details > *:not(summary){display:block !important;}
+  .check input{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .check input:checked + span{color:#444 !important;text-decoration:line-through;}
+  a{color:#000 !important;text-decoration:underline;}
+  h1,h2,h3,h4{color:#000 !important;page-break-after:avoid;break-after:avoid;}
+  h1{font-size:17pt !important;}
+  h2{font-size:14pt !important;border-bottom:1px solid #999 !important;margin-top:6mm !important;}
+  h3{font-size:12pt !important;color:#222 !important;}
+  .tag{background:#e5e5e5 !important;color:#000 !important;border:1px solid #999 !important;}
+  .credit-name{-webkit-text-fill-color:#000 !important;color:#000 !important;background:none !important;font-size:22pt !important;}
+  .credit-date{border:1px solid #999 !important;color:#000 !important;background:#fff !important;}
+  .url{color:#000 !important;}
+  .check-progress{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" aria-hidden="true"><i id="readProgress"></i></div>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="brand"><span class="dot"></span>7 HABILIDADES · CHATGPT WORK</div>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <input type="search" id="searchInput" placeholder="Buscar en el tutorial…" aria-label="Buscar en el tutorial">
+        <span class="search-count" id="searchCount"></span>
+      </div>
+      <button class="tool" id="btnFontDown" title="Reducir tamaño del texto" aria-label="Reducir tamaño del texto">A−</button>
+      <button class="tool" id="btnFontUp" title="Aumentar tamaño del texto" aria-label="Aumentar tamaño del texto">A+</button>
+      <button class="tool" id="btnTheme" title="Cambiar tema claro / oscuro">🌙 Tema</button>
+      <button class="tool" id="btnPrint" title="Imprimir o guardar como PDF">🖨 PDF</button>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Secciones del tutorial">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab active" data-tab="inicio" role="tab">INICIO</button>
+    <button class="tab" data-tab="conceptos" role="tab">CONCEPTOS</button>
+    <button class="tab" data-tab="procedimiento" role="tab">PROCEDIMIENTO</button>
+    <button class="tab" data-tab="practica" role="tab">PRÁCTICA</button>
+    <button class="tab" data-tab="errores" role="tab">ERRORES</button>
+    <button class="tab" data-tab="resumen" role="tab">RESUMEN</button>
+    <button class="tab" data-tab="fuentes" role="tab">FUENTES</button>
+    <button class="tab" data-tab="prompts" role="tab">PROMPTS</button>
+    <button class="tab" data-tab="ejercicios" role="tab">EJERCICIOS</button>
+    <button class="tab" data-tab="creditos" role="tab">CRÉDITOS</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================
+     PANEL: INICIO
+     ============================================================ -->
+<section class="panel active" id="panel-inicio" role="tabpanel" aria-label="Inicio">
+  <h2 class="print-only">Inicio</h2>
+
+  <svg class="svg-hero" viewBox="0 0 400 320" role="img"
+       aria-label="Animación: siete habilidades orbitando alrededor del núcleo ChatGPT Work"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="heroGlowA" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
+        <stop offset="65%" stop-color="#1e3a5f" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#1e3a5f" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="heroCoreA" cx="50%" cy="38%" r="65%">
+        <stop offset="0%" stop-color="#7dd3fc"/>
+        <stop offset="55%" stop-color="#1e3a5f"/>
+        <stop offset="100%" stop-color="#0f172a"/>
+      </radialGradient>
+      <linearGradient id="heroRingA" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#38bdf8"/>
+        <stop offset="100%" stop-color="#1e3a5f"/>
+      </linearGradient>
+    </defs>
+
+    <rect x="0" y="0" width="400" height="320" rx="16" fill="#0a0e1a"/>
+
+    <circle cx="200" cy="160" r="120" fill="url(#heroGlowA)">
+      <animate attributeName="r" values="105;138;105" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.65;1;0.65" dur="5s" repeatCount="indefinite"/>
+    </circle>
+
+    <g>
+      <ellipse cx="200" cy="160" rx="115" ry="115" fill="none"
+               stroke="url(#heroRingA)" stroke-width="1.5" stroke-dasharray="5 8" opacity="0.85"/>
+      <animateTransform attributeName="transform" type="rotate"
+                        from="0 200 160" to="360 200 160" dur="40s" repeatCount="indefinite"/>
+    </g>
+
+    <g>
+      <ellipse cx="200" cy="160" rx="76" ry="76" fill="none"
+               stroke="#1e3a5f" stroke-width="1.2" stroke-dasharray="3 6"/>
+      <animateTransform attributeName="transform" type="rotate"
+                        from="360 200 160" to="0 200 160" dur="26s" repeatCount="indefinite"/>
+    </g>
+
+    <circle cx="200" cy="160" r="46" fill="url(#heroCoreA)" stroke="#38bdf8" stroke-width="1.6">
+      <animate attributeName="r" values="44;48;44" dur="3.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="200" y="156" text-anchor="middle" font-size="14" font-weight="700"
+          fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">ChatGPT</text>
+    <text x="200" y="174" text-anchor="middle" font-size="13" font-weight="600"
+          fill="#7dd3fc" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">Work</text>
+
+    <g>
+      <animateTransform attributeName="transform" type="rotate"
+                        from="0 200 160" to="360 200 160" dur="24s" repeatCount="indefinite"/>
+
+      <g stroke="#38bdf8" stroke-width="1" opacity="0.35">
+        <line x1="200" y1="160" x2="315" y2="160"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="271.7" y2="249.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0.35s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="174.4" y2="272.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0.7s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="96.4" y2="209.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.05s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="96.4" y2="110.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.4s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="174.4" y2="47.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.75s" repeatCount="indefinite"/></line>
+        <line x1="200" y1="160" x2="271.7" y2="70.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="2.1s" repeatCount="indefinite"/></line>
+      </g>
+
+      <circle cx="315" cy="160" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="315" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">1<animateTransform attributeName="transform" type="rotate" from="360 315 160" to="0 315 160" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="271.7" cy="249.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="271.7" y="254.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">2<animateTransform attributeName="transform" type="rotate" from="360 271.7 249.9" to="0 271.7 249.9" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="174.4" cy="272.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="174.4" y="277.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">3<animateTransform attributeName="transform" type="rotate" from="360 174.4 272.1" to="0 174.4 272.1" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="96.4" cy="209.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="96.4" y="214.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">4<animateTransform attributeName="transform" type="rotate" from="360 96.4 209.9" to="0 96.4 209.9" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="96.4" cy="110.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="96.4" y="115.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">5<animateTransform attributeName="transform" type="rotate" from="360 96.4 110.1" to="0 96.4 110.1" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="174.4" cy="47.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="174.4" y="52.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">6<animateTransform attributeName="transform" type="rotate" from="360 174.4 47.9" to="0 174.4 47.9" dur="24s" repeatCount="indefinite"/></text>
+
+      <circle cx="271.7" cy="70.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+      <text x="271.7" y="75.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">7<animateTransform attributeName="transform" type="rotate" from="360 271.7 70.1" to="0 271.7 70.1" dur="24s" repeatCount="indefinite"/></text>
+    </g>
+  </svg>
+
+  <h1>Las 7 Habilidades de ChatGPT Work</h1>
+  <p style="font-size:1.02rem;color:var(--muted);margin-top:-.3rem;">
+    Tutorial interactivo paso a paso: instalación, configuración y uso real.
+  </p>
+
+  <div class="box info">
+    <span class="box-title">Qué vas a aprender</span>
+    <p>A convertir la generación de texto plano en <strong>flujos de trabajo estructurados</strong>.
+    Conocerás las 7 habilidades —<em>Visualize, Verifica, Relevo, Cuestióname, Multiplica, CreaFlujo</em> y
+    <em>Remotion</em>— y sabrás instalarlas, invocarlas y aplicarlas a tareas reales sin perder el control
+    ni comprometer tu seguridad.</p>
+  </div>
+
+  <div class="grid two">
+    <div class="mini">
+      <h4>¿Para qué sirve este tutorial?</h4>
+      <p>Para dejar de repetir las mismas instrucciones en cada chat y empezar a tener asistentes
+      especializados que recuerdan el procedimiento, el formato y los límites.</p>
+    </div>
+    <div class="mini">
+      <h4>¿Por qué importa?</h4>
+      <p>Porque resuelve el defecto principal de la IA genérica: la inconsistencia. Una habilidad
+      garantiza que el resultado sea siempre igual de bueno y con el mismo formato.</p>
+    </div>
+  </div>
+
+  <h2>Antes de empezar necesitas</h2>
+  <ul class="checklist" data-checklist="requisitos">
+    <li><label class="check"><input type="checkbox" data-check="r1"><span>La <strong>aplicación de escritorio</strong> de ChatGPT Work instalada (las funciones avanzadas de gestión de habilidades están optimizadas ahí).</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="r2"><span>Acceso al menú <strong>Complementos → Habilidades</strong> en tu espacio de trabajo.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="r3"><span>Un <strong>chat nuevo y limpio</strong> para probar cada habilidad sin arrastrar contexto anterior.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="r4"><span>Los <strong>archivos de práctica</strong> que se indican en cada demostración (opcionales, pero recomendados).</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="r5"><span>Claridad sobre un principio: <strong>nunca</strong> introducirás contraseñas, claves API ni tokens en los prompts.</span></label></li>
+  </ul>
+  <div class="check-progress">
+    <span id="reqLabel">0/5 completado</span>
+    <span class="bar"><i id="reqBar"></i></span>
+  </div>
+
+  <h2>Objetivos del tutorial</h2>
+  <ol>
+    <li><strong>Entender</strong> qué es una habilidad y en qué se diferencia de un prompt suelto.</li>
+    <li><strong>Distinguir</strong> los tres tipos de habilidades: preinstaladas, personales y de complemento.</li>
+    <li><strong>Instalar</strong> correctamente una habilidad personal desde el Creador de habilidades.</li>
+    <li><strong>Invocar</strong> cada habilidad con su comando y verificar que responde según lo especificado.</li>
+    <li><strong>Aplicar</strong> las 7 habilidades a situaciones reales de trabajo.</li>
+    <li><strong>Evitar</strong> los errores de seguridad más peligrosos.</li>
+  </ol>
+
+  <h2>Cómo utilizar este tutorial</h2>
+  <ol class="steps">
+    <li><strong>Lee primero la pestaña CONCEPTOS.</strong><span class="why">Sin entender qué es una habilidad, los pasos de instalación se vuelven recetas sueltas que no sabrás adaptar.</span></li>
+    <li><strong>Ve a PROCEDIMIENTO y sigue el Capítulo 0.</strong><span class="why">Es el procedimiento general de instalación: sirve para las 5 habilidades personales.</span></li>
+    <li><strong>Copia los prompts con el botón COPIAR.</strong><span class="why">Evita errores de transcripción y conserva los puntos de aprobación obligatoria.</span></li>
+    <li><strong>Practica en la pestaña PRÁCTICA y refuerza con EJERCICIOS.</strong><span class="why">Cada ejercicio trae la solución explicada para que compares tu resultado.</span></li>
+    <li><strong>Revisa ERRORES antes de usar esto en producción.</strong><span class="why">Ahí están las reglas que evitan que una habilidad envíe correos o borre archivos sin permiso.</span></li>
+  </ol>
+
+  <div class="box warn">
+    <span class="box-title">Importante</span>
+    <p>La disponibilidad de funciones como <em>Visualize</em> o del complemento <em>Remotion</em> puede variar
+    según el plan contratado, la región y las políticas del espacio de trabajo. Si algo no aparece en tu menú,
+    consulta con el administrador de tu organización antes de intentar simularlo.</p>
+  </div>
+
+  <h2>Índice rápido de las 7 habilidades</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Habilidad</th><th>Tipo</th><th>Comando</th><th>Para qué sirve</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Visualize</strong></td><td>Preinstalada</td><td><code>@Visualize</code></td><td>Simuladores y representaciones visuales interactivas</td></tr>
+        <tr><td>2</td><td><strong>Verifica</strong></td><td>Personal</td><td><code>$verifica</code></td><td>Auditar afirmaciones factuales contra fuentes oficiales</td></tr>
+        <tr><td>3</td><td><strong>Relevo</strong></td><td>Personal</td><td><code>$relevo</code></td><td>Migrar el contexto de un proyecto a otra IA</td></tr>
+        <tr><td>4</td><td><strong>Cuestióname</strong></td><td>Personal</td><td><code>$cuestioname</code></td><td>Entrevista previa antes de construir nada</td></tr>
+        <tr><td>5</td><td><strong>Multiplica</strong></td><td>Personal</td><td><code>$multiplica</code></td><td>Convertir una fuente en un kit completo de materiales</td></tr>
+        <tr><td>6</td><td><strong>CreaFlujo</strong></td><td>Personal</td><td><code>$creaflujo</code></td><td>Empaquetar procesos repetitivos en nuevas habilidades</td></tr>
+        <tr><td>7</td><td><strong>Remotion</strong></td><td>Complemento</td><td>Automática</td><td>Crear y renderizar vídeo programático</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: CONCEPTOS
+     ============================================================ -->
+<section class="panel" id="panel-conceptos" role="tabpanel" aria-label="Conceptos">
+  <h2 class="print-only">Conceptos</h2>
+  <h1>Conceptos fundamentales</h1>
+  <p>Antes de tocar un solo botón, necesitas tres ideas claras. Si las entiendes, todo lo demás encaja solo.</p>
+
+  <h2>1. ¿Qué es ChatGPT Work?</h2>
+  <p><strong>ChatGPT Work</strong> es la versión empresarial y de espacio de trabajo de la plataforma de
+  inteligencia artificial de OpenAI, diseñada para entornos profesionales que requieren herramientas
+  integradas y flujos de trabajo estructurados.</p>
+
+  <div class="box info">
+    <span class="box-title">En una frase</span>
+    <p>Es el mismo ChatGPT, pero preparado para trabajar en equipo dentro de una empresa: con permisos,
+    complementos y procedimientos guardados.</p>
+  </div>
+
+  <h2>2. ¿Qué es una Habilidad (Skill)?</h2>
+  <p>Una <strong>Habilidad</strong> es un conjunto de instrucciones reutilizables y preconfiguradas que enseñan
+  a la inteligencia artificial cómo debe abordar una tarea específica de principio a fin.</p>
+  <p>En lugar de redactar una instrucción larga (<em>prompt</em>) cada vez que necesitas realizar un trabajo
+  habitual, la habilidad almacena:</p>
+  <ul>
+    <li>el <strong>procedimiento</strong> paso a paso;</li>
+    <li>las <strong>reglas de formato</strong> de la entrega;</li>
+    <li>las <strong>fuentes prioritarias</strong> que debe consultar;</li>
+    <li>los <strong>límites de actuación</strong> (qué no puede hacer sin tu permiso).</li>
+  </ul>
+
+  <div class="box ok">
+    <span class="box-title">Analogía cotidiana</span>
+    <p>Imagina que contratas a un asistente administrativo nuevo. El primer día tienes que explicarle
+    detalladamente cómo preparar los informes de ventas. Si escribes un <strong>manual de procedimientos</strong>
+    y se lo entregas, a partir del segundo día solo tendrás que pedirle <em>"prepara el informe"</em> y sabrá
+    exactamente qué formato usar, qué datos verificar y a quién pedir autorización.</p>
+    <p>Eso es exactamente una <strong>Habilidad</strong> en ChatGPT Work.</p>
+  </div>
+
+  <h2>3. ¿Para qué sirven y por qué importa aprenderlas?</h2>
+  <p>Las habilidades resuelven el principal defecto de la generación genérica de texto:
+  la <strong>inconsistencia</strong> y las "paredes de texto" poco estructuradas.</p>
+
+  <div class="grid two">
+    <div class="mini">
+      <h4>1. Garantizan consistencia</h4>
+      <p>La IA recuerda el orden de los pasos, los formatos requeridos y qué no debe hacer sin tu permiso previo.</p>
+    </div>
+    <div class="mini">
+      <h4>2. Transforman las respuestas</h4>
+      <p>Permiten pasar de un bloque de texto plano a simuladores interactivos, gráficos, auditorías detalladas o paquetes de archivos comprimidos.</p>
+    </div>
+    <div class="mini">
+      <h4>3. Ahorran tiempo operativo</h4>
+      <p>Evitan repetir las mismas instrucciones iniciales en cada nueva conversación.</p>
+    </div>
+    <div class="mini">
+      <h4>4. Seguridad y control</h4>
+      <p>Establecen puntos de control obligatorio antes de realizar acciones en sistemas externos.</p>
+    </div>
+  </div>
+
+  <h2>4. Los 3 tipos de habilidades</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Tipo</th><th>Origen</th><th>Cómo se obtiene</th><th>Ejemplos</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag pre">Preinstalada</span></td>
+          <td>OpenAI</td>
+          <td>Vienen incluidas de serie. Se seleccionan directamente desde la interfaz, sin configurarlas.</td>
+          <td><em>Visualize</em></td>
+        </tr>
+        <tr>
+          <td><span class="tag per">Personal</span></td>
+          <td>El propio usuario</td>
+          <td>Se crean con un prompt de configuración introducido en el <strong>Creador de habilidades</strong>.</td>
+          <td><em>Verifica, Relevo, Cuestióname, Multiplica, CreaFlujo</em></td>
+        </tr>
+        <tr>
+          <td><span class="tag plu">Complemento</span></td>
+          <td>Tienda de complementos</td>
+          <td>Se incorporan automáticamente al instalar un complemento oficial.</td>
+          <td><em>Remotion</em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>5. Situaciones reales: sin habilidad vs. con habilidad</h2>
+  <p>Esta tabla es la forma más rápida de entender el valor real de una habilidad. Léela con calma.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Situación real</th><th>Sin habilidad (ineficiente)</th><th>Con habilidad (profesional)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Comprobar un informe antes de publicarlo</strong></td>
+          <td>Pedir <em>"revisa si este texto tiene errores"</em>. La IA corrige estilo y gramática, pero pasa por alto fechas, precios o datos desactualizados.</td>
+          <td>Invocar <code>$verifica</code>. Extrae cada afirmación factual, busca evidencia en documentación oficial y entrega una tabla con veredictos y frases corregidas.</td>
+        </tr>
+        <tr>
+          <td><strong>Transferir un proyecto a otra IA (ej. Claude)</strong></td>
+          <td>Copiar y pegar fragmentos del chat. La otra IA pierde el contexto de las decisiones aprobadas y los archivos adjuntos.</td>
+          <td>Invocar <code>$relevo</code>. Genera un paquete autónomo comprimido con objetivos, decisiones, errores pendientes y la orden exacta lista para pegar.</td>
+        </tr>
+        <tr>
+          <td><strong>Encargar una tarea compleja y ambigua</strong></td>
+          <td>Escribir <em>"hazme una app de analítica de vídeo"</em>. La IA empieza a programar inmediatamente haciendo suposiciones equivocadas.</td>
+          <td>Invocar <code>$cuestioname</code>. La IA se detiene, hace un máximo de 5 preguntas clave y no construye nada hasta recibir tu aprobación.</td>
+        </tr>
+        <tr>
+          <td><strong>Estudiar a partir de una clase grabada</strong></td>
+          <td>Pedir <em>"resúmeme este texto"</em>. Obtienes un resumen somero de un par de páginas.</td>
+          <td>Invocar <code>$multiplica</code>. Genera apuntes, esquema de una página, 30 tarjetas CSV, un examen, las soluciones y un plan de repaso de 7 días.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>6. Regla de Oro de Seguridad y Privacidad</h2>
+  <div class="box bad">
+    <span class="box-title">Nunca lo olvides</span>
+    <p><strong>Jamás introduzcas contraseñas, claves API, tokens de acceso ni credenciales privadas</strong>
+    dentro de los prompts de las habilidades personales o compartibles.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Puntos de aprobación explícita</span>
+    <p>Toda acción que implique <strong>modificar sistemas externos, publicar contenidos, enviar correos
+    electrónicos o borrar archivos</strong> debe mantener una pausa obligatoria donde la IA te pida
+    confirmación humana antes de ejecutar.</p>
+  </div>
+
+  <details>
+    <summary>Resumen del capítulo de conceptos</summary>
+    <ul>
+      <li><strong>ChatGPT Work</strong> es la versión empresarial de ChatGPT.</li>
+      <li>Una <strong>habilidad</strong> es un manual de procedimiento reutilizable para la IA.</li>
+      <li>Existen <strong>3 tipos</strong>: preinstaladas, personales y de complemento.</li>
+      <li>Su valor está en la <strong>consistencia</strong>, el <strong>formato estructurado</strong>, el <strong>ahorro de tiempo</strong> y la <strong>seguridad</strong>.</li>
+      <li>Nunca metas credenciales en un prompt.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============================================================
+     PANEL: PROCEDIMIENTO
+     ============================================================ -->
+<section class="panel" id="panel-procedimiento" role="tabpanel" aria-label="Procedimiento">
+  <h2 class="print-only">Procedimiento</h2>
+  <h1>Procedimiento: instalación, configuración y uso</h1>
+  <p>Empezamos por el procedimiento general, que sirve para las 5 habilidades personales.
+  Después revisamos las 7 habilidades una a una.</p>
+
+  <h2>Capítulo 0 — Procedimiento general</h2>
+
+  <h3>Objetivo</h3>
+  <p>Instalar una habilidad personal en tu cuenta de ChatGPT Work y comprobar que funciona.</p>
+
+  <h3>Explicación sencilla</h3>
+  <p>El proceso siempre es el mismo: abres la app, vas al catálogo, abres un chat limpio, pegas el prompt
+  de creación, apruebas y pruebas. Si repites estos cinco pasos con cualquier habilidad personal,
+  el resultado es el mismo.</p>
+
+  <h3>Pasos</h3>
+  <ol class="steps">
+    <li><strong>Abre la aplicación de escritorio de ChatGPT Work.</strong><span class="why">Las funciones avanzadas de gestión de habilidades están optimizadas en la app de escritorio; en navegador puede faltar alguna opción.</span></li>
+    <li><strong>Haz clic en <em>Complementos</em> en la barra lateral izquierda y selecciona la pestaña <em>Habilidades</em>.</strong><span class="why">Ahí ves el catálogo completo: preinstaladas, personales y de complementos activos.</span></li>
+    <li><strong>Abre un chat nuevo y selecciona la herramienta <em>Creador de habilidades</em>.</strong><span class="why">El creador interpreta la especificación en lenguaje natural y la compila dentro del registro de habilidades de tu cuenta.</span></li>
+    <li><strong>Pega el prompt completo de la habilidad y revisa los permisos solicitados.</strong><span class="why">Antes de aprobar debes saber exactamente qué podrá hacer la habilidad y qué no.</span></li>
+    <li><strong>Confirma la instalación pulsando <em>Aprobar</em>.</strong><span class="why">Este paso guarda permanentemente la habilidad bajo su nombre e identificador visible.</span></li>
+    <li><strong>Abre una conversación nueva, escribe el comando y ejecuta el prompt de prueba.</strong><span class="why">Validar en limpio confirma que la habilidad responde según las especificaciones y entrega el formato esperado.</span></li>
+  </ol>
+
+  <h3>Resultado esperado</h3>
+  <p>La habilidad aparece listada en tu catálogo con su nombre visible y su identificador, y al invocarla
+  responde con la estructura definida en su prompt.</p>
+
+  <h3>Si algo sale mal</h3>
+  <ul>
+    <li><strong>El comando <code>$comando</code> no ejecuta la habilidad:</strong> selecciónala directamente desde el menú contextual (tecla <code>/</code>) o escribe la petición sin el prefijo.</li>
+    <li><strong>No aparece el Creador de habilidades:</strong> puede estar restringido por tu plan o por las políticas del espacio de trabajo. Consulta con tu administrador.</li>
+    <li><strong>La habilidad responde de forma genérica:</strong> probablemente el prompt no se pegó completo. Reinstálala desde cero en un chat limpio.</li>
+  </ul>
+
+  <hr>
+
+  <h2>Capítulo 1 — Visualize <span class="tag pre">Preinstalada</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Visualize</strong> es una habilidad oficial preinstalada que transforma explicaciones teóricas
+  densas en herramientas y representaciones visuales e interactivas. En lugar de entregar párrafos de texto,
+  genera simuladores con controles deslizantes, mapas mentales, diagramas de flujo, comparadores de
+  escenarios y líneas temporales.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Preinstalada.</li>
+    <li><strong>Invocación:</strong> <code>@Visualize</code> o seleccionándola con la barra inclinada <code>/</code> en la caja de texto.</li>
+  </ul>
+
+  <h4>Comparación: sin Visualize vs. con Visualize</h4>
+  <div class="vs">
+    <div class="bad-side">
+      <h4>Sin Visualize</h4>
+      <p><em>"Explícame de forma clara cómo influyen la velocidad de la nave, la masa de la carga y la
+      ventana de lanzamiento en una misión tripulada de la Tierra a Marte. Compara varios escenarios y
+      destaca los principales compromisos…"</em></p>
+      <p><strong>Resultado:</strong> una explicación teórica correcta, pero presentada como un bloque
+      extenso de texto difícil de analizar rápidamente.</p>
+    </div>
+    <div class="good-side">
+      <h4>Con Visualize</h4>
+      <p><code>@Visualize</code> Crea un simulador interactivo tipo centro de control de una misión espacial…
+      con controles para modificar la velocidad de la nave, la masa de la carga y la ventana de lanzamiento.
+      Incluye tres modos (eficiente, equilibrado, rápido) y actualiza en directo la duración estimada, un
+      índice relativo de combustible y el nivel de dificultad.</p>
+      <p><strong>Resultado:</strong> un panel de control animado donde los planetas se mueven en sus órbitas,
+      con botones para ajustar velocidad y masa en tiempo real, recalculando automáticamente los días de
+      viaje y el consumo de combustible.</p>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Tratar de crear la habilidad desde cero si no aparece en el menú. <em>Visualize</em> es una función
+    desplegada de forma progresiva por OpenAI. Si no aparece al escribir <code>@Visualize</code>, se debe a
+    restricciones de tu plan o espacio de trabajo.</p>
+  </div>
+
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Pide a <em>Visualize</em> que añada <strong>múltiples modos prefijados</strong> (por ejemplo:
+    eficiente, equilibrado y rápido) para poder comparar el impacto de cambiar variables de un solo vistazo.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Visualize</em> elimina la densidad de la información creando simuladores
+  interactivos sin necesidad de instalar código adicional.</p>
+
+  <hr>
+
+  <h2>Capítulo 2 — Verifica <span class="tag per">Personal</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Verifica</strong> es una habilidad personal diseñada para auditar borradores de guiones,
+  informes o presentaciones. Su objetivo principal es extraer afirmaciones objetivas y comprobarlas contra
+  documentación oficial y fuentes primarias, evitando que publiques datos desactualizados o erróneos.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Personal.</li>
+    <li><strong>Invocación:</strong> <code>$verifica</code>.</li>
+  </ul>
+
+  <h3>Pasos de instalación</h3>
+  <ol class="steps">
+    <li><strong>Abre el Creador de habilidades en ChatGPT Work.</strong><span class="why">Es el único entorno donde se compilan las habilidades personales.</span></li>
+    <li><strong>Copia el bloque de código de abajo y pégalo en el chat.</strong><span class="why">El bloque contiene todas las reglas de auditoría, incluida la prohibición de inventar fuentes.</span></li>
+    <li><strong>Revisa el identificador <code>verifica</code> y confirma la instalación.</strong><span class="why">El identificador es lo que permite invocarla después con el comando.</span></li>
+  </ol>
+
+  <h3>Prompt completo de creación</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Verifica</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Crea e instala una skill personal llamada Verifica. Debe activarse cuando el usuario quiera comprobar un guion, informe, presentación, propuesta o cualquier borrador con afirmaciones factuales. Primero debe extraer las afirmaciones comprobables y separarlas de opiniones, ejemplos y proyecciones. Debe priorizar datos sensibles al tiempo, cifras, precios, fechas, compatibilidades, límites y afirmaciones de riesgo alto. Para cada afirmación debe buscar evidencia actual, priorizando fuentes primarias y oficiales, y clasificarla como Verificada, Necesita matiz, Incorrecta o No verificable. El resultado debe incluir una tabla con la afirmación original, el veredicto, la evidencia, la fuente con URL y fecha, el nivel de riesgo y la corrección exacta. No debe considerar un fragmento de buscador como verificación definitiva si existe una fuente primaria. No debe inventar fuentes ni reescribir partes puramente estilísticas. Al final debe entregar únicamente los párrafos que haya que sustituir, listos para copiar, y una lista separada de dudas que sigan abiertas. Instálala con el nombre visible Verifica y el identificador verifica.</code></pre>
+  </div>
+
+  <h3>Demostración práctica</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt de prueba</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$verifica Revisa el archivo adjunto antes de que lo publique. Comprueba todas las afirmaciones sobre disponibilidad, funcionamiento, precios y compatibilidad. Prioriza documentación oficial y devuélveme primero los errores que podrían hacer que el vídeo quede desactualizado. Después dame las frases corregidas listas para sustituir.</code></pre>
+  </div>
+  <p><strong>Archivo requerido:</strong> <code>02_borrador_para_verificar.txt</code>.</p>
+
+  <h4>Estructura del resultado generado</h4>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Afirmación original</th><th>Veredicto</th><th>Evidencia</th><th>Fuente (URL y fecha)</th><th>Riesgo</th><th>Corrección exacta</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><em>"ChatGPT Work solo funciona desde el navegador web."</em></td>
+          <td><strong>Incorrecta</strong></td>
+          <td>Existen aplicaciones oficiales para sistemas de escritorio y móviles.</td>
+          <td>Documentación OpenAI (01/09/2026)</td>
+          <td><strong>Alto</strong></td>
+          <td><em>"ChatGPT Work está disponible en aplicaciones de escritorio, móviles y navegador web compatibles."</em></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Al finalizar la tabla, la habilidad lista en un bloque independiente los párrafos exactos corregidos
+  para reemplazar directamente en el documento original.</p>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Confiar en que un resumen rápido del buscador es suficiente verificación. La regla interna de la
+    habilidad prohíbe dar por válida una comprobación basada en fragmentos secundarios si existe la
+    documentación oficial del fabricante o institución.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Ejecuta <code>$verifica</code> siempre que un borrador contenga datos sensibles al tiempo como precios
+    de suscripción, límites de almacenamiento o compatibilidades de software.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Verifica</em> actúa como un auditor factual que contrasta afirmaciones
+  contra fuentes oficiales y entrega las correcciones listas para reemplazar.</p>
+
+  <hr>
+
+  <h2>Capítulo 3 — Relevo <span class="tag per">Personal</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Relevo</strong> es una habilidad personal que empaqueta todo el estado operativo de un proyecto
+  para transferirlo de forma limpia a otra inteligencia artificial (como Claude o Gemini) o a una nueva
+  conversación sin perder contexto.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Personal.</li>
+    <li><strong>Invocación:</strong> <code>$relevo</code>.</li>
+  </ul>
+
+  <h3>Pasos de instalación</h3>
+  <ol class="steps">
+    <li><strong>Abre el Creador de habilidades.</strong><span class="why">Mismo entorno que en las demás habilidades personales.</span></li>
+    <li><strong>Copia y pega el prompt de creación de abajo.</strong><span class="why">Contiene los cuatro modos de operación y las reglas de privacidad.</span></li>
+    <li><strong>Aprueba la instalación verificando el identificador <code>relevo</code>.</strong><span class="why">Así podrás invocarla con <code>$relevo</code>.</span></li>
+  </ol>
+
+  <h3>Prompt completo de creación</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Relevo</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Crea e instala una skill personal llamada Relevo. Debe utilizarse cuando el usuario quiera continuar un trabajo en otra inteligencia artificial, otro modelo o una tarea nueva; solicitar una comparación independiente; pedir una crítica; o condensar una conversación demasiado larga. Debe inferir uno de estos modos: Continuar, Comparación independiente, Crítica o Contexto limpio. Solo preguntará si elegir el modo incorrecto cambiaría materialmente el resultado. Debe revisar la conversación y los archivos y generar un único paquete autónomo y listo para pegar con: objetivo, entregable, estado actual, decisiones aprobadas, restricciones, fuentes y archivos, trabajo pendiente, riesgos abiertos y siguiente acción exacta. En modo Comparación independiente no debe incluir la respuesta ni las conclusiones actuales. Debe conservar el texto exacto cuando sea importante, separar hechos de supuestos, eliminar saludos, repeticiones, registros técnicos y contexto irrelevante, y señalar qué archivos debe volver a adjuntar el usuario si el destino no puede acceder a ellos. Nunca debe incluir contraseñas, claves ni información privada innecesaria. Instálala con el nombre visible Relevo y el identificador relevo.</code></pre>
+  </div>
+
+  <h3>Demostración práctica</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt de prueba</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$relevo Prepara un paquete para continuar este proyecto en Claude. El siguiente objetivo es corregir los controles táctiles que se superponen con la interfaz en móvil y la aparición de naves duplicadas tras varios reinicios. Conserva el diseño, las mecánicas, la puntuación y el aumento progresivo de velocidad. Indica todos los archivos que debo volver a adjuntar y termina con una instrucción lista para copiar.</code></pre>
+  </div>
+  <p><strong>Archivos asociados:</strong> <code>NEON-RIFT-base.html</code> y <code>RELEVO-CLAUDE-ejemplo.md</code>.</p>
+
+  <h4>Estructura del paquete generado</h4>
+  <ol>
+    <li><strong>Objetivo del proyecto:</strong> descripción concisa del producto.</li>
+    <li><strong>Estado actual y decisiones aprobadas:</strong> lista de mecánicas y diseños validados.</li>
+    <li><strong>Archivos a re-adjuntar:</strong> relación explícita de archivos necesarios para la otra plataforma.</li>
+    <li><strong>Instrucción autónoma de cierre:</strong> un prompt listo para copiar y pegar en la IA de destino, con el resumen ejecutivo e instrucciones de prueba.</li>
+  </ol>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Incluir en el relevo la solución o conclusión propuesta por la primera IA cuando buscas una segunda
+    opinión imparcial. La habilidad detecta automáticamente el modo "Comparación independiente" y omite las
+    conclusiones previas para no sesgar el análisis de la nueva IA.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Utiliza <code>$relevo</code> cuando un chat de ChatGPT Work se vuelva demasiado extenso y comience a
+    degradar su memoria operativa.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Relevo</em> sintetiza conversaciones extensas en expedientes técnicos
+  independientes listos para migrar de plataforma sin perder decisiones previas.</p>
+
+  <hr>
+
+  <h2>Capítulo 4 — Cuestióname <span class="tag per">Personal</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Cuestióname</strong> es una habilidad inspirada en las metodologías de especificación
+  desarrolladas por expertos como Mat Pocock. Su función es frenar la ejecución impulsiva de la IA ante
+  encargos ambiguos, obligándola a realizar una breve entrevista estructurada de máximo 5 preguntas de
+  alto impacto antes de trabajar.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Personal.</li>
+    <li><strong>Invocación:</strong> <code>$cuestioname</code>.</li>
+  </ul>
+
+  <h3>Pasos de instalación</h3>
+  <ol class="steps">
+    <li><strong>Accede al Creador de habilidades.</strong><span class="why">Es donde se registran las habilidades personales.</span></li>
+    <li><strong>Copia y pega el prompt completo de creación.</strong><span class="why">Incluye la prohibición expresa de construir nada antes de la confirmación.</span></li>
+    <li><strong>Aprueba la habilidad con el nombre visible <code>Cuestióname</code> e identificador <code>cuestioname</code>.</strong><span class="why">El nombre visible es el que verás en el catálogo; el identificador es el del comando.</span></li>
+  </ol>
+
+  <h3>Prompt completo de creación</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Cuestióname</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Crea e instala una skill personal llamada Cuestióname. Debe activarse únicamente cuando el usuario la invoque de forma explícita o pida que lo entrevisten antes de empezar. No debe interrumpir solicitudes claras por iniciativa propia. Al activarse, debe revisar la petición y todo el contexto disponible, detectar las decisiones o supuestos que podrían cambiar materialmente el resultado y formular un máximo de cinco preguntas de alto impacto en un único bloque numerado. No debe preguntar datos ya presentes ni preferencias menores. Puede ofrecer opciones breves cuando faciliten la decisión, pero siempre debe permitir responder libremente o indicar que use su criterio. Después de la respuesta solo podrá hacer una pregunta adicional si falta algo imprescindible. A continuación debe resumir objetivo, entregable, decisiones, restricciones y definición de terminado, y pedir confirmación. No debe crear archivos, investigar, editar, enviar ni ejecutar la tarea hasta recibir esa confirmación. Una vez aprobada, debe dejar de entrevistar y comenzar. Instálala con el nombre visible Cuestióname y el identificador cuestioname.</code></pre>
+  </div>
+
+  <h3>Demostración práctica</h3>
+
+  <h4>Paso 1 — Solicitud inicial del usuario</h4>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt de prueba</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$cuestioname Quiero crear una herramienta que analice mis vídeos y me diga qué debería publicar después.</code></pre>
+  </div>
+
+  <h4>Paso 2 — Entrevista automatizada (5 preguntas)</h4>
+  <p>La habilidad analiza la petición e interrumpe cualquier construcción para devolver un bloque numerado:</p>
+  <ol>
+    <li>¿En qué plataforma publicas y cuál es el objetivo principal de rendimiento?</li>
+    <li>¿Qué tipo de datos proporcionas (archivos de vídeo, estadísticas de retención, CTR)?</li>
+    <li>¿Cuál es tu audiencia objetivo y qué restricciones de contenido existen?</li>
+    <li>¿Qué formato exacto debe tener la propuesta final (ideas, guiones, justificación)?</li>
+    <li>¿Qué alcance debe tener la primera versión (herramienta local manual o integración API)?</li>
+  </ol>
+
+  <h4>Paso 3 — Respuestas y confirmación</h4>
+  <p>El usuario responde a los 5 puntos y la IA presenta un <strong>Resumen de Ejecución</strong>.
+  El usuario concluye enviando el prompt de confirmación:</p>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Confirmación</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Confirmo el resumen. Puedes empezar a construir la primera versión siguiendo exactamente esas decisiones.</code></pre>
+  </div>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Permitir que la IA empiece a programar o escribir antes de definir los criterios de entrega.
+    <em>Cuestióname</em> prohíbe expresamente generar código o archivos hasta recibir la confirmación
+    explícita del resumen.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Puedes indicarle a la IA que use su propio criterio en cualquiera de las preguntas respondiendo
+    simplemente: <em>"Punto 3: usa tu criterio"</em>.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Cuestióname</em> evita el desperdicio de horas de desarrollo mediante un
+  filtro previo de hasta 5 preguntas clave.</p>
+
+  <hr>
+
+  <h2>Capítulo 5 — Multiplica <span class="tag per">Personal</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Multiplica</strong> es una habilidad personal diseñada para la transformación masiva de
+  contenidos. A partir de una única fuente de información (como la transcripción de una clase, un informe
+  o un pódcast), genera un paquete coordinado de materiales de aprendizaje o difusión.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Personal.</li>
+    <li><strong>Invocación:</strong> <code>$multiplica</code>.</li>
+  </ul>
+
+  <h3>Pasos de instalación</h3>
+  <ol class="steps">
+    <li><strong>Abre el Creador de habilidades.</strong><span class="why">Entorno habitual de creación.</span></li>
+    <li><strong>Copia y pega el prompt de creación de abajo.</strong><span class="why">Define los dos modos (Estudio y Contenido) y la lista exacta de entregables.</span></li>
+    <li><strong>Instálala bajo la denominación <code>Multiplica</code>.</strong><span class="why">Quedará disponible con <code>$multiplica</code>.</span></li>
+  </ol>
+
+  <h3>Prompt completo de creación</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Multiplica</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Crea e instala una skill personal llamada Multiplica. Debe activarse cuando el usuario quiera convertir una fuente principal como una clase, transcripción, vídeo, pódcast, artículo, presentación o informe en varios materiales derivados coordinados. Primero debe identificar el objetivo del paquete y escoger entre dos modos: Estudio o Contenido. Solo preguntará si elegir el modo incorrecto cambiaría materialmente el resultado. Siempre debe basarse exclusivamente en la fuente, conservar su significado, indicar lagunas y no inventar datos, citas, ejemplos ni experiencias. En modo Estudio, salvo que el usuario pida otra cosa, debe crear: apuntes organizados por conceptos y relaciones; un esquema visual de una página; 30 tarjetas de estudio en CSV con pregunta, respuesta, dificultad y referencia; un examen de práctica sin respuestas; un documento separado con soluciones y criterios de corrección; un plan de repaso de siete días; instrucciones de uso; y un ZIP con todo el paquete. Cuando existan marcas de tiempo o páginas, debe utilizarlas como referencias. En modo Contenido, debe proponer formatos derivados adecuados al canal solicitado, evitar repetir el mismo ángulo y dejar cada pieza lista para copiar. Antes de entregar debe comprobar que cada material cumple una función diferente, que las respuestas del examen no aparecen en el documento de preguntas y que todas las afirmaciones proceden de la fuente. Instálala con el nombre visible Multiplica y el identificador multiplica.</code></pre>
+  </div>
+
+  <h3>Demostración práctica</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt de prueba</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$multiplica Convierte esta clase en un paquete completo de estudio. Crea apuntes organizados, un esquema visual de una página, 30 tarjetas de estudio, un examen de práctica sin respuestas, un documento separado con las soluciones y un plan de repaso de siete días. Básate exclusivamente en la transcripción y utiliza sus marcas de tiempo como referencias. Entrégamelo todo también en un ZIP.</code></pre>
+  </div>
+  <p><strong>Archivo de práctica:</strong> <code>Clase_Memoria_y_Aprendizaje_Transcripcion.txt</code>.</p>
+
+  <h4>Entregables incluidos en el paquete comprimido</h4>
+  <ol>
+    <li><strong>Apuntes organizados:</strong> síntesis estructurada por conceptos con marcas de tiempo originales.</li>
+    <li><strong>Esquema visual:</strong> diagrama conceptual de una página (<em>De comprender a recordar</em>).</li>
+    <li><strong>30 tarjetas de estudio (CSV):</strong> archivo importable con pregunta, respuesta, dificultad y referencia.</li>
+    <li><strong>Examen de práctica:</strong> evaluación sin respuestas expuestas.</li>
+    <li><strong>Documento de soluciones:</strong> hoja separada con claves de respuesta y criterios de evaluación.</li>
+    <li><strong>Plan de repaso:</strong> cronograma de estudio espaciado de 7 días.</li>
+  </ol>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Que las respuestas del examen se filtren en la hoja de preguntas. Las directrices del prompt fuerzan
+    la segregación física de los archivos de examen y soluciones.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Extrae la transcripción automática de cualquier vídeo educativo y ejecuta <code>$multiplica</code>
+    para obtener un kit de repaso instantáneo.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Multiplica</em> convierte una sola fuente de datos en una suite completa
+  de materiales de estudio o difusión perfectamente coordinados.</p>
+
+  <hr>
+
+  <h2>Capítulo 6 — CreaFlujo <span class="tag per">Personal</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>CreaFlujo</strong> es una meta-habilidad personal diseñada para empaquetar procesos repetitivos
+  en nuevas habilidades reutilizables y seguras. Analiza un flujo de trabajo manual y genera una habilidad
+  secundaria adaptada con reglas estrictas de autorización.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Personal.</li>
+    <li><strong>Invocación:</strong> <code>$creaflujo</code>.</li>
+  </ul>
+
+  <h3>Pasos de instalación</h3>
+  <ol class="steps">
+    <li><strong>Abre el Creador de habilidades.</strong><span class="why">CreaFlujo también se instala como cualquier habilidad personal.</span></li>
+    <li><strong>Copia y pega el prompt de creación de abajo.</strong><span class="why">Contiene la entrevista obligatoria y la separación entre lectura y modificación.</span></li>
+    <li><strong>Guarda la habilidad como <code>CreaFlujo</code>.</strong><span class="why">Quedará disponible con <code>$creaflujo</code>.</span></li>
+  </ol>
+
+  <h3>Prompt completo de creación</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · CreaFlujo</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Crea e instala una skill personal llamada CreaFlujo. Debe activarse cuando el usuario quiera convertir un proceso repetitivo propio en una skill reutilizable. Antes de crearla debe entrevistar al usuario sobre: resultado y desencadenantes; archivos o entradas iniciales; pasos en orden; aplicaciones, complementos o servicios implicados; decisiones que puede tomar sola; acciones que requieren aprobación; resultado final; forma de verificarlo; fallos habituales; dependencias; privacidad y credenciales. Solo debe preguntar lo que cambie materialmente el flujo y, si es largo, hacerlo en rondas cortas. Después debe devolver el proceso ordenado, separar los pasos de solo lectura de las acciones que modifican sistemas externos y señalar contradicciones o riesgos. No construirá la nueva skill hasta que el usuario apruebe ese diseño. Una vez aprobado, utilizará las herramientas de creación de skills para generar una habilidad de alcance estrecho, con desencadenantes claros, dependencias declaradas y todos los puntos de aprobación preservados. Nunca almacenará contraseñas, claves o tokens en instrucciones compartibles. Si falta una dependencia, se detendrá en vez de fingir éxito. Debe probar la skill con un ejemplo seguro que no envíe, publique, compre, elimine ni exponga información privada y mostrar el nombre, archivos, dependencias y resultado de la prueba. Instálala con el nombre visible CreaFlujo y el identificador creaflujo.</code></pre>
+  </div>
+
+  <h3>Demostración práctica en 4 pasos (revisión de patrocinios)</h3>
+
+  <h4>Paso 1 — Invocar CreaFlujo y definir el proceso repetitivo</h4>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Paso 1</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$creaflujo Quiero convertir mi proceso de revisión de contenidos patrocinados en una habilidad. Recibirá el brief, el guion, un enlace de revisión y una tabla de seguimiento. Debe detectar incumplimientos, preparar el correo y actualizar el estado, pero nunca enviar nada sin mi aprobación.</code></pre>
+  </div>
+
+  <h4>Paso 2 — Aprobar el diseño presentado por CreaFlujo</h4>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Paso 2</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Apruebo este diseño. Crea e instala la habilidad con el nombre visible Revisa patrocinados y el identificador revisa-patrocinados. Conserva todos los puntos de aprobación y no ejecutes todavía ninguna acción externa.</code></pre>
+  </div>
+
+  <h4>Paso 3 — Ejecutar la nueva habilidad recién creada</h4>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Paso 3</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>$revisa-patrocinados Revisa este contenido patrocinado de NovaFlow utilizando los cuatro archivos adjuntos. No modifiques ni envíes nada sin mi aprobación.</code></pre>
+  </div>
+  <p><strong>Archivos de práctica:</strong> <code>04_brief_novaflow.pdf</code>,
+  <code>05_guion_integracion_novaflow.txt</code>, <code>06_enlace_revision_novaflow.txt</code>,
+  <code>07_seguimiento_patrocinios.md</code>.</p>
+
+  <h4>Paso 4 — Confirmar y autorizar la aplicación de cambios</h4>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt · Paso 4</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Apruebo las correcciones I1, I2 e I3 y la creación de las copias propuestas. Aplica únicamente esos cambios, realiza una segunda revisión y prepara el borrador del correo. Actualiza el seguimiento con el estado correcto, manteniendo como pendientes los elementos que no puedas verificar. No envíes ningún correo.</code></pre>
+  </div>
+
+  <div class="box bad">
+    <span class="box-title">Error fatal</span>
+    <p>Crear una habilidad que envíe correos o modifique bases de datos automáticamente sin confirmación.
+    <em>CreaFlujo</em> separa obligatoriamente las tareas de "solo lectura" de las "acciones de modificación",
+    exigiendo la aprobación previa del usuario.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Diseña habilidades de <strong>alcance estrecho</strong> (skills pequeñas) para tareas específicas en
+    lugar de una habilidad gigante que intente gestionarlo todo.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>CreaFlujo</em> te permite construir tus propias habilidades
+  personalizadas de forma estructurada y con garantías de seguridad.</p>
+
+  <hr>
+
+  <h2>Capítulo 7 — Remotion <span class="tag plu">Complemento</span></h2>
+
+  <h3>¿Qué es y para qué sirve?</h3>
+  <p><strong>Remotion</strong> es un complemento oficial para ChatGPT Work que integra un paquete de
+  12 habilidades internas coordinadas. Permite crear, modificar y renderizar vídeos y animaciones
+  cinematográficas programáticas utilizando únicamente instrucciones en lenguaje natural.</p>
+  <ul>
+    <li><strong>Tipo:</strong> Complemento / Plugin.</li>
+    <li><strong>Instalación:</strong> Tienda de Complementos → Buscar "Remotion" → Instalar.</li>
+  </ul>
+
+  <h3>Funcionamiento y automatización</h3>
+  <p>Al instalar <em>Remotion</em>, no es necesario invocar cada una de sus 12 habilidades manualmente:
+  ChatGPT Work selecciona y combina automáticamente las herramientas necesarias (composición, efectos,
+  renderizado, previsualización) según el encargo.</p>
+
+  <h3>Demostración práctica — Animación GPT-6 Astra</h3>
+  <div class="code-wrap">
+    <div class="code-head">
+      <span>Prompt de prueba</span>
+      <button class="copyBtn" type="button">COPIAR</button>
+    </div>
+    <pre><code>Utiliza Remotion para crear una animación cinematográfica de 15 segundos presentando GPT-6 Astra. Sobre un fondo negro, haz aparecer un núcleo 3D formado por partículas azules, conexiones y anillos de energía. Integra brevemente los textos «Investigación», «Programación», «Uso del ordenador» y «Trabajo profesional». Después, las partículas deben formar una gran letra A, explotar y revelar el título «GPT-6 ASTRA». Estilo tecnológico premium, movimientos de cámara, profundidad, destellos y final espectacular. Previsualiza, corrige cualquier error y renderiza un MP4 en 1920 x 1080 listo para YouTube.</code></pre>
+  </div>
+
+  <h4>Resultado técnico obtenido</h4>
+  <ol>
+    <li><strong>Composición:</strong> archivo MP4 de 15 segundos en resolución 1920 × 1080 a 30 fps.</li>
+    <li><strong>Previsualización y corrección:</strong> la habilidad detecta errores de sintaxis en el código React/Remotion, los corrige automáticamente y renderiza la pieza final.</li>
+    <li><strong>Editable:</strong> el proyecto completo permanece abierto para solicitar ajustes de color, texto o velocidad sin reescribir la animación desde cero.</li>
+  </ol>
+
+  <div class="box warn">
+    <span class="box-title">Error frecuente</span>
+    <p>Intentar crear un reemplazo personal si el complemento <em>Remotion</em> no aparece. No intentes
+    simular capacidades de renderizado mediante prompts simples; si <em>Remotion</em> no está disponible en
+    tu espacio de trabajo, debes esperar su despliegue oficial.</p>
+  </div>
+  <div class="box ok">
+    <span class="box-title">Truco de experto</span>
+    <p>Revisa siempre las habilidades internas que vienen incluidas dentro de cada complemento que instales
+    para descubrir funciones avanzadas invisibles a primera vista.</p>
+  </div>
+
+  <p><strong>Resumen:</strong> <em>Remotion</em> demuestra el poder de las habilidades de complemento para
+  generar vídeos MP4 mediante programación y descripciones simples.</p>
+
+  <details>
+    <summary>Resumen del capítulo de procedimiento</summary>
+    <ul>
+      <li>El procedimiento general tiene <strong>5 pasos</strong> y sirve para cualquier habilidad personal.</li>
+      <li><strong>Visualize</strong> es preinstalada y se invoca con <code>@Visualize</code>.</li>
+      <li><strong>Verifica, Relevo, Cuestióname, Multiplica</strong> y <strong>CreaFlujo</strong> son personales y se crean pegando su prompt en el Creador de habilidades.</li>
+      <li><strong>Remotion</strong> es un complemento con 12 habilidades internas que se combinan solas.</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============================================================
+     PANEL: PRÁCTICA
+     ============================================================ -->
+<section class="panel" id="panel-practica" role="tabpanel" aria-label="Práctica">
+  <h2 class="print-only">Práctica</h2>
+  <h1>Práctica: ejercicios y casos reales</h1>
+  <p>Aquí aplicas lo aprendido. Cada ejercicio incluye la solución explicada para que compares tu resultado.
+  Para una batería completa de 21 ejercicios organizados por niveles, visita la pestaña <strong>EJERCICIOS</strong>.</p>
+
+  <h2>Ejercicio 1 — Auditoría de presupuesto</h2>
+  <div class="card">
+    <p><strong>Consigna:</strong> tienes un borrador comercial con precios y quieres auditarlo.
+    ¿Qué habilidad debes usar y cuál es la instrucción?</p>
+  </div>
+
+  <details open>
+    <summary>Ver solución explicada</summary>
+    <p>Debes invocar la habilidad <strong>Verifica</strong> mediante el comando <code>$verifica</code> y
+    adjuntar el borrador. La habilidad extraerá los precios, los contrastará con las tarifas oficiales y te
+    entregará una tabla con las correcciones exactas.</p>
+    <div class="code-wrap">
+      <div class="code-head">
+        <span>Solución</span>
+        <button class="copyBtn" type="button">COPIAR</button>
+      </div>
+      <pre><code>$verifica Revisa el borrador comercial adjunto. Comprueba todos los precios, descuentos y condiciones de facturación contra las tarifas oficiales vigentes. Prioriza documentación oficial y devuélveme primero los errores de riesgo alto. Después dame las frases corregidas listas para sustituir.</code></pre>
+    </div>
+  </details>
+
+  <h2>Ejercicio 2 — Entrevista previa antes de diseñar un logotipo</h2>
+  <div class="card">
+    <p><strong>Consigna:</strong> el cliente te pide <em>"diseña la identidad gráfica de mi empresa"</em>
+    sin darte más datos. ¿Cómo evitas trabajar a ciegas?</p>
+  </div>
+
+  <details open>
+    <summary>Ver solución explicada</summary>
+    <p>Invoca la habilidad <strong>Cuestióname</strong> (<code>$cuestioname</code>). La IA se detendrá y te
+    formulará un máximo de 5 preguntas clave sobre la audiencia, los colores, los valores y las restricciones
+    antes de generar propuestas.</p>
+    <div class="code-wrap">
+      <div class="code-head">
+        <span>Solución</span>
+        <button class="copyBtn" type="button">COPIAR</button>
+      </div>
+      <pre><code>$cuestioname Quiero diseñar la identidad gráfica de una empresa. Entrevístame antes de proponer nada y ayúdame a definir el alcance del proyecto.</code></pre>
+    </div>
+  </details>
+
+  <h2>Caso real A — Revisión de patrocinios con CreaFlujo</h2>
+  <p>Este es el flujo completo de 4 pasos que ya viste en el capítulo 6. Repásalo aquí como práctica guiada.</p>
+
+  <ol class="steps">
+    <li><strong>Definir el proceso repetitivo.</strong><span class="why">Sin una descripción clara del flujo, CreaFlujo no puede diseñar nada útil.</span></li>
+    <li><strong>Aprobar el diseño.</strong><span class="why">CreaFlujo no construye la habilidad hasta que apruebas su diseño y confirma los puntos de aprobación.</span></li>
+    <li><strong>Ejecutar la nueva habilidad.</strong><span class="why">Comprueba que funciona en un caso real con archivos de prueba.</span></li>
+    <li><strong>Autorizar los cambios explícitamente.</strong><span class="why">Confirmas qué correcciones se aplican y cuáles quedan pendientes; nada se envía sin tu permiso.</span></li>
+  </ol>
+
+  <div class="box info">
+    <span class="box-title">Archivos de práctica</span>
+    <p><code>04_brief_novaflow.pdf</code> · <code>05_guion_integracion_novaflow.txt</code> ·
+    <code>06_enlace_revision_novaflow.txt</code> · <code>07_seguimiento_patrocinios.md</code></p>
+  </div>
+
+  <h2>Caso real B — Animación cinematográfica con Remotion</h2>
+  <p>El objetivo es producir un MP4 de 15 segundos en 1920 × 1080 listo para YouTube, partiendo solo de una
+  descripción en lenguaje natural.</p>
+
+  <div class="vs">
+    <div class="bad-side">
+      <h4>Enfoque incorrecto</h4>
+      <p>Pedir <em>"hazme un vídeo bonito de mi marca"</em> sin duración, resolución, contenido textual ni
+      estilo. El resultado será impredecible y habrá que rehacerlo.</p>
+    </div>
+    <div class="good-side">
+      <h4>Enfoque correcto</h4>
+      <p>Especificar duración (15 s), resolución (1920 × 1080), fondo, elementos visuales, textos exactos,
+      estilo, transiciones y el resultado esperado (MP4 listo para YouTube).</p>
+    </div>
+  </div>
+
+  <h2>Checklist de práctica</h2>
+  <ul class="checklist" data-checklist="practica">
+    <li><label class="check"><input type="checkbox" data-check="p1"><span>He instalado correctamente al menos una habilidad personal desde el Creador de habilidades.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="p2"><span>He probado <code>$verifica</code> con un borrador real y he revisado la tabla de auditoría.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="p3"><span>He usado <code>$relevo</code> para migrar un proyecto a otra conversación o IA.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="p4"><span>He comprobado que <code>$cuestioname</code> no construye nada antes de la confirmación.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="p5"><span>He generado un paquete de estudio completo con <code>$multiplica</code>.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="p6"><span>He creado una habilidad propia con <code>$creaflujo</code> y conserva sus puntos de aprobación.</span></label></li>
+  </ul>
+  <div class="check-progress">
+    <span id="pracLabel">0/6 completado</span>
+    <span class="bar"><i id="pracBar"></i></span>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: ERRORES
+     ============================================================ -->
+<section class="panel" id="panel-errores" role="tabpanel" aria-label="Errores">
+  <h2 class="print-only">Errores y resolución de problemas</h2>
+  <h1>Errores frecuentes y cómo corregirlos</h1>
+
+  <h2>Errores por habilidad</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Habilidad</th><th>Error frecuente</th><th>Solución</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Visualize</strong></td><td>Tratar de crear la habilidad desde cero si no aparece en el menú.</td><td>Es una función desplegada progresivamente por OpenAI. Si no aparece al escribir <code>@Visualize</code>, se debe a restricciones de tu plan o espacio de trabajo.</td></tr>
+        <tr><td><strong>Verifica</strong></td><td>Confiar en que un resumen rápido del buscador es suficiente verificación.</td><td>La regla interna prohíbe dar por válida una comprobación basada en fragmentos secundarios si existe documentación oficial.</td></tr>
+        <tr><td><strong>Relevo</strong></td><td>Incluir la solución propuesta por la primera IA cuando buscas una segunda opinión imparcial.</td><td>Detecta el modo "Comparación independiente" y omite las conclusiones previas para no sesgar el análisis.</td></tr>
+        <tr><td><strong>Cuestióname</strong></td><td>Permitir que la IA empiece a programar antes de definir los criterios de entrega.</td><td>La habilidad prohíbe expresamente generar código o archivos hasta recibir la confirmación explícita del resumen.</td></tr>
+        <tr><td><strong>Multiplica</strong></td><td>Que las respuestas del examen se filtren en la hoja de preguntas.</td><td>Las directrices del prompt fuerzan la segregación física de los archivos de examen y soluciones.</td></tr>
+        <tr><td><strong>CreaFlujo</strong></td><td>Crear una habilidad que envíe correos o modifique bases de datos automáticamente.</td><td>Separa obligatoriamente las tareas de solo lectura de las acciones de modificación y exige aprobación previa.</td></tr>
+        <tr><td><strong>Remotion</strong></td><td>Intentar crear un reemplazo personal si el complemento no aparece.</td><td>No simules capacidades de renderizado con prompts simples; espera el despliegue oficial.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Errores que NUNCA deben cometerse</h2>
+  <div class="box bad">
+    <span class="box-title">1. Credenciales en prompts</span>
+    <p><strong>NUNCA</strong> introduzcas credenciales, claves API o datos privados dentro de los prompts de
+    las habilidades.</p>
+  </div>
+  <div class="box bad">
+    <span class="box-title">2. Ejecución automática</span>
+    <p><strong>NUNCA</strong> permitas que una habilidad ejecute envíos o borrados automáticos sin solicitar
+    tu permiso previo.</p>
+  </div>
+  <div class="box bad">
+    <span class="box-title">3. Simular complementos</span>
+    <p><strong>NUNCA</strong> intentes simular o fabricar habilidades de complementos técnicos (como
+    <em>Remotion</em>) mediante texto simple si no tienes el plugin instalado.</p>
+  </div>
+
+  <h2>Lista de comprobación antes de publicar o ejecutar</h2>
+  <ul class="checklist" data-checklist="seguridad">
+    <li><label class="check"><input type="checkbox" data-check="s1"><span>¿La habilidad requiere aprobación explícita antes de modificar sistemas externos?</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="s2"><span>¿He verificado que el prompt de la habilidad no contiene contraseñas o claves privadas?</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="s3"><span>¿He probado la habilidad en una tarea limpia antes de integrarla en producción?</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="s4"><span>En habilidades de auditoría (<em>Verifica</em>), ¿se han priorizado las fuentes primarias oficiales?</span></label></li>
+  </ul>
+  <div class="check-progress">
+    <span id="segLabel">0/4 completado</span>
+    <span class="bar"><i id="segBar"></i></span>
+  </div>
+
+  <h2>Preguntas frecuentes y solución de problemas</h2>
+
+  <details><summary>1. No me aparece una habilidad preinstalada o complemento en mi cuenta.</summary><p>La disponibilidad de ciertas funciones varía según la región, el plan contratado o las políticas del espacio de trabajo de tu empresa. Actualiza la app de escritorio o consulta con tu administrador.</p></details>
+  <details><summary>2. El comando con prefijo (<code>$comando</code>) no ejecuta la habilidad.</summary><p>Selecciona la habilidad directamente desde el menú contextual (tecla <code>/</code>) o escribe la petición sin el prefijo en el chat.</p></details>
+  <details><summary>3. La habilidad me hace demasiadas preguntas y vuelve lento el proceso.</summary><p>Modifica las instrucciones de la habilidad especificando que <em>solo formule preguntas ante decisiones que cambien materialmente el resultado</em>.</p></details>
+  <details><summary>4. ¿Puedo usar una habilidad compartida por otra persona?</summary><p>Sí, siempre que su prompt no contenga credenciales ni información privada. Revisa siempre el prompt antes de instalarlo en tu cuenta.</p></details>
+  <details><summary>5. La habilidad entrega el contenido en un formato distinto al que necesito.</summary><p>Edita el prompt de creación añadiendo una sección explícita de formato de salida y reinstálala.</p></details>
+</section>
+
+<!-- ============================================================
+     PANEL: RESUMEN
+     ============================================================ -->
+<section class="panel" id="panel-resumen" role="tabpanel" aria-label="Resumen">
+  <h2 class="print-only">Resumen</h2>
+  <h1>Resumen y repaso final</h1>
+
+  <h2>Resumen general de lo aprendido</h2>
+  <p>En este tutorial hemos aprendido a transformar la generación de texto plano en flujos de trabajo
+  estructurados mediante <strong>7 Habilidades en ChatGPT Work</strong>. Vimos cómo instalar habilidades
+  personales desde el <strong>Creador de habilidades</strong>, cómo aprovechar funciones preinstaladas como
+  <em>Visualize</em> y cómo usar complementos avanzados como <em>Remotion</em> para producir vídeo.</p>
+
+  <h2>Tabla comparativa de las 7 habilidades</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Habilidad</th><th>Tipo</th><th>Invocación</th><th>Función principal</th><th>Entregable</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>1. Visualize</strong></td><td>Preinstalada</td><td><code>@Visualize</code></td><td>Simulaciones y representaciones visuales</td><td>Paneles interactivos y simuladores</td></tr>
+        <tr><td><strong>2. Verifica</strong></td><td>Personal</td><td><code>$verifica</code></td><td>Auditoría de datos factuales y precios</td><td>Tabla de auditoría y frases corregidas</td></tr>
+        <tr><td><strong>3. Relevo</strong></td><td>Personal</td><td><code>$relevo</code></td><td>Migración de contexto a otra IA</td><td>Paquete <code>.md</code> comprimido e instrucción</td></tr>
+        <tr><td><strong>4. Cuestióname</strong></td><td>Personal</td><td><code>$cuestioname</code></td><td>Entrevista previa antes de construir</td><td>Bloque de 5 preguntas y plan aprobado</td></tr>
+        <tr><td><strong>5. Multiplica</strong></td><td>Personal</td><td><code>$multiplica</code></td><td>Conversión de fuentes en kits de estudio</td><td>Apuntes, tarjetas, examen, soluciones y ZIP</td></tr>
+        <tr><td><strong>6. CreaFlujo</strong></td><td>Personal</td><td><code>$creaflujo</code></td><td>Automatización de flujos repetitivos</td><td>Nueva habilidad personalizada segura</td></tr>
+        <tr><td><strong>7. Remotion</strong></td><td>Complemento</td><td>Automática</td><td>Creación programática de vídeo</td><td>Vídeo MP4 animado en 1920 × 1080</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Lista de conceptos clave</h2>
+  <div class="grid two">
+    <div class="mini"><h4>Habilidad (Skill)</h4><p>Conjunto de instrucciones reutilizables que dictan el comportamiento y formato de entrega de la IA.</p></div>
+    <div class="mini"><h4>Creador de habilidades</h4><p>Entorno dentro de ChatGPT Work para programar habilidades personales mediante lenguaje natural.</p></div>
+    <div class="mini"><h4>Fuentes primarias</h4><p>Documentos y portales oficiales prioritarios para validar información.</p></div>
+    <div class="mini"><h4>Aprobación explícita</h4><p>Pausa de seguridad humana obligatoria antes de realizar acciones en sistemas externos.</p></div>
+  </div>
+
+  <h2>Recomendaciones profesionales para seguir aprendiendo</h2>
+  <ul>
+    <li>Empieza automatizando el proceso manual que más repitas en tu día a día.</li>
+    <li>Mantén tus habilidades con un <strong>alcance estrecho y especializado</strong>: las habilidades pequeñas y enfocadas funcionan mejor que las complejas.</li>
+    <li>Revisa y actualiza periódicamente los prompts de tus habilidades: los datos sensibles al tiempo caducan.</li>
+    <li>Nunca compartas una habilidad sin revisar antes que su prompt esté libre de credenciales.</li>
+  </ul>
+
+  <h2>Checklist de aprendizaje</h2>
+  <ul class="checklist" data-checklist="aprendizaje">
+    <li><label class="check"><input type="checkbox" data-check="a1"><span>Sé explicar qué es una habilidad y en qué se diferencia de un prompt suelto.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="a2"><span>Distingo los tres tipos de habilidades: preinstaladas, personales y de complemento.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="a3"><span>Puedo instalar una habilidad personal siguiendo los 5 pasos del procedimiento general.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="a4"><span>Conozco el comando de cada una de las 7 habilidades.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="a5"><span>Tengo claro que ninguna habilidad debe ejecutar acciones externas sin mi aprobación.</span></label></li>
+    <li><label class="check"><input type="checkbox" data-check="a6"><span>Sé qué hacer si una habilidad o complemento no aparece en mi cuenta.</span></label></li>
+  </ul>
+  <div class="check-progress">
+    <span id="aprLabel">0/6 completado</span>
+    <span class="bar"><i id="aprBar"></i></span>
+  </div>
+
+  <h2>Glosario de términos técnicos</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Término</th><th>Definición</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Prompt</strong></td><td>Instrucción o texto de entrada que se envía a la IA para solicitar una respuesta.</td></tr>
+        <tr><td><strong>Skill</strong></td><td>Habilidad: conjunto de instrucciones reutilizables y preconfiguradas.</td></tr>
+        <tr><td><strong>CSV</strong></td><td><em>Comma-Separated Values</em>. Formato de archivo de texto estructurado por columnas, ideal para importar datos a hojas de cálculo o programas de tarjetas de estudio.</td></tr>
+        <tr><td><strong>MP4</strong></td><td>Formato estándar de archivo de vídeo digital renderizado por herramientas como <em>Remotion</em>.</td></tr>
+        <tr><td><strong>ZIP</strong></td><td>Archivo comprimido que empaqueta múltiples documentos dentro de un único contenedor fácil de descargar.</td></tr>
+        <tr><td><strong>Complemento / Plugin</strong></td><td>Módulo oficial que se instala desde la tienda y añade habilidades internas.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: FUENTES
+     ============================================================ -->
+<section class="panel" id="panel-fuentes" role="tabpanel" aria-label="Fuentes">
+  <h2 class="print-only">Fuentes</h2>
+  <h1>Fuentes y material de referencia</h1>
+
+  <h2>Vídeo de referencia</h2>
+  <ul class="src-list">
+    <li><strong>Título del vídeo</strong>Las 7 SKILLS de ChatGPT Work que uso cada día (CÓPIALAS)</li>
+    <li><strong>Canal</strong>Migue Baena IA</li>
+    <li><strong>URL del vídeo</strong><span class="url">https://youtube.com/watch?v=OmGhMDhHdkk&amp;is=QpgsAKRRHqeaiVMi</span></li>
+  </ul>
+
+  <h2>Fuentes consultadas</h2>
+  <ol class="src-list">
+    <li><strong>Guia_Practica_7_Habilidades_ChatGPT_Work.pdf</strong>Documento PDF de soporte técnico de Migue Baena IA, septiembre de 2026.</li>
+    <li><strong>Las 7 SKILLS de ChatGPT Work que uso cada día (CÓPIALAS)</strong>Transcripción oficial del vídeo publicado en el canal <em>Migue Baena IA</em>.</li>
+    <li><strong>PROMPTS / Nota nueva</strong>Repositorio en formato Markdown con las instrucciones de instalación y ejemplos de prueba.</li>
+    <li><strong>URL DEL VIDEO / Voces Silenciosas</strong>Registro y enlace al recurso audiovisual.</li>
+  </ol>
+
+  <div class="box warn">
+    <span class="box-title">Aviso sobre vigencia</span>
+    <p>La disponibilidad de funciones, complementos y límites puede cambiar con el tiempo. Verifica siempre
+    contra la documentación oficial de OpenAI antes de dar por válida cualquier afirmación técnica de este
+    tutorial.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: PROMPTS
+     ============================================================ -->
+<section class="panel" id="panel-prompts" role="tabpanel" aria-label="Prompts">
+  <h2 class="print-only">Prompts</h2>
+  <h1>Biblioteca de prompts</h1>
+  <p>Colección completa de prompts listos para copiar. Cada uno incluye una descripción breve y una indicación
+  de cuándo usarlo. Pulsa <strong>COPIAR</strong> para llevarlo al portapapeles tal cual, sin modificar
+  ninguna instrucción.</p>
+
+  <nav class="prompt-index" aria-label="Índice de prompts">
+    <h2>Índice de prompts</h2>
+    <ol>
+      <li class="pi-cat">Creación de habilidades personales</li>
+      <li><a href="#prompt-crear-verifica">Crear la habilidad Verifica (auditoría factual)</a></li>
+      <li><a href="#prompt-crear-relevo">Crear la habilidad Relevo (migración de contexto)</a></li>
+      <li><a href="#prompt-crear-cuestioname">Crear la habilidad Cuestióname (entrevista previa)</a></li>
+      <li><a href="#prompt-crear-multiplica">Crear la habilidad Multiplica (kit de materiales)</a></li>
+      <li><a href="#prompt-crear-creaflujo">Crear la habilidad CreaFlujo (meta-habilidad)</a></li>
+
+      <li class="pi-cat">Uso y demostraciones</li>
+      <li><a href="#prompt-probar-verifica">Probar Verifica con un borrador</a></li>
+      <li><a href="#prompt-probar-relevo">Probar Relevo migrando un proyecto</a></li>
+      <li><a href="#prompt-probar-cuestioname">Probar Cuestióname (solicitud inicial)</a></li>
+      <li><a href="#prompt-confirmar-cuestioname">Confirmación tras Cuestióname</a></li>
+      <li><a href="#prompt-probar-multiplica">Probar Multiplica con una clase</a></li>
+      <li><a href="#prompt-creaflujo-paso-1">CreaFlujo — Paso 1: definir el proceso</a></li>
+      <li><a href="#prompt-creaflujo-paso-2">CreaFlujo — Paso 2: aprobar el diseño</a></li>
+      <li><a href="#prompt-creaflujo-paso-3">CreaFlujo — Paso 3: ejecutar la nueva habilidad</a></li>
+      <li><a href="#prompt-creaflujo-paso-4">CreaFlujo — Paso 4: autorizar cambios</a></li>
+      <li><a href="#prompt-remotion-astra">Crear animación cinematográfica con Remotion</a></li>
+
+      <li class="pi-cat">Ejercicios prácticos</li>
+      <li><a href="#prompt-ejercicio-verifica">Ejercicio — Auditoría de presupuesto con Verifica</a></li>
+      <li><a href="#prompt-ejercicio-cuestioname">Ejercicio — Entrevista previa con Cuestióname</a></li>
+    </ol>
+  </nav>
+
+  <article class="promptCard" id="prompt-crear-verifica">
+    <h3>1. Crear la habilidad Verifica <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de creación de la habilidad personal <em>Verifica</em>, que audita borradores con afirmaciones factuales contra fuentes primarias y oficiales, y entrega una tabla con veredictos y frases corregidas.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> dentro del <em>Creador de habilidades</em>, una única vez, para instalar el comando <code>$verifica</code> en tu cuenta.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Crea e instala una skill personal llamada Verifica. Debe activarse cuando el usuario quiera comprobar un guion, informe, presentación, propuesta o cualquier borrador con afirmaciones factuales. Primero debe extraer las afirmaciones comprobables y separarlas de opiniones, ejemplos y proyecciones. Debe priorizar datos sensibles al tiempo, cifras, precios, fechas, compatibilidades, límites y afirmaciones de riesgo alto. Para cada afirmación debe buscar evidencia actual, priorizando fuentes primarias y oficiales, y clasificarla como Verificada, Necesita matiz, Incorrecta o No verificable. El resultado debe incluir una tabla con la afirmación original, el veredicto, la evidencia, la fuente con URL y fecha, el nivel de riesgo y la corrección exacta. No debe considerar un fragmento de buscador como verificación definitiva si existe una fuente primaria. No debe inventar fuentes ni reescribir partes puramente estilísticas. Al final debe entregar únicamente los párrafos que haya que sustituir, listos para copiar, y una lista separada de dudas que sigan abiertas. Instálala con el nombre visible Verifica y el identificador verifica.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-crear-relevo">
+    <h3>2. Crear la habilidad Relevo <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de creación de la habilidad personal <em>Relevo</em>, que empaqueta el estado de un proyecto en un único documento autónomo listo para continuar en otra IA o en una conversación nueva.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> en el <em>Creador de habilidades</em>, para instalar el comando <code>$relevo</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Crea e instala una skill personal llamada Relevo. Debe utilizarse cuando el usuario quiera continuar un trabajo en otra inteligencia artificial, otro modelo o una tarea nueva; solicitar una comparación independiente; pedir una crítica; o condensar una conversación demasiado larga. Debe inferir uno de estos modos: Continuar, Comparación independiente, Crítica o Contexto limpio. Solo preguntará si elegir el modo incorrecto cambiaría materialmente el resultado. Debe revisar la conversación y los archivos y generar un único paquete autónomo y listo para pegar con: objetivo, entregable, estado actual, decisiones aprobadas, restricciones, fuentes y archivos, trabajo pendiente, riesgos abiertos y siguiente acción exacta. En modo Comparación independiente no debe incluir la respuesta ni las conclusiones actuales. Debe conservar el texto exacto cuando sea importante, separar hechos de supuestos, eliminar saludos, repeticiones, registros técnicos y contexto irrelevante, y señalar qué archivos debe volver a adjuntar el usuario si el destino no puede acceder a ellos. Nunca debe incluir contraseñas, claves ni información privada innecesaria. Instálala con el nombre visible Relevo y el identificador relevo.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-crear-cuestioname">
+    <h3>3. Crear la habilidad Cuestióname <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de creación de la habilidad personal <em>Cuestióname</em>, que interrumpe la ejecución impulsiva y entrevista al usuario con hasta 5 preguntas clave antes de construir nada.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> en el <em>Creador de habilidades</em>, para instalar el comando <code>$cuestioname</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Crea e instala una skill personal llamada Cuestióname. Debe activarse únicamente cuando el usuario la invoque de forma explícita o pida que lo entrevisten antes de empezar. No debe interrumpir solicitudes claras por iniciativa propia. Al activarse, debe revisar la petición y todo el contexto disponible, detectar las decisiones o supuestos que podrían cambiar materialmente el resultado y formular un máximo de cinco preguntas de alto impacto en un único bloque numerado. No debe preguntar datos ya presentes ni preferencias menores. Puede ofrecer opciones breves cuando faciliten la decisión, pero siempre debe permitir responder libremente o indicar que use su criterio. Después de la respuesta solo podrá hacer una pregunta adicional si falta algo imprescindible. A continuación debe resumir objetivo, entregable, decisiones, restricciones y definición de terminado, y pedir confirmación. No debe crear archivos, investigar, editar, enviar ni ejecutar la tarea hasta recibir esa confirmación. Una vez aprobada, debe dejar de entrevistar y comenzar. Instálala con el nombre visible Cuestióname y el identificador cuestioname.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-crear-multiplica">
+    <h3>4. Crear la habilidad Multiplica <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de creación de la habilidad personal <em>Multiplica</em>, que convierte una única fuente (clase, vídeo, informe…) en un paquete coordinado de materiales de estudio o difusión.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> en el <em>Creador de habilidades</em>, para instalar el comando <code>$multiplica</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Crea e instala una skill personal llamada Multiplica. Debe activarse cuando el usuario quiera convertir una fuente principal como una clase, transcripción, vídeo, pódcast, artículo, presentación o informe en varios materiales derivados coordinados. Primero debe identificar el objetivo del paquete y escoger entre dos modos: Estudio o Contenido. Solo preguntará si elegir el modo incorrecto cambiaría materialmente el resultado. Siempre debe basarse exclusivamente en la fuente, conservar su significado, indicar lagunas y no inventar datos, citas, ejemplos ni experiencias. En modo Estudio, salvo que el usuario pida otra cosa, debe crear: apuntes organizados por conceptos y relaciones; un esquema visual de una página; 30 tarjetas de estudio en CSV con pregunta, respuesta, dificultad y referencia; un examen de práctica sin respuestas; un documento separado con soluciones y criterios de corrección; un plan de repaso de siete días; instrucciones de uso; y un ZIP con todo el paquete. Cuando existan marcas de tiempo o páginas, debe utilizarlas como referencias. En modo Contenido, debe proponer formatos derivados adecuados al canal solicitado, evitar repetir el mismo ángulo y dejar cada pieza lista para copiar. Antes de entregar debe comprobar que cada material cumple una función diferente, que las respuestas del examen no aparecen en el documento de preguntas y que todas las afirmaciones proceden de la fuente. Instálala con el nombre visible Multiplica y el identificador multiplica.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-crear-creaflujo">
+    <h3>5. Crear la habilidad CreaFlujo <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de creación de la habilidad personal <em>CreaFlujo</em>, una meta-habilidad que entrevista al usuario y empaqueta procesos repetitivos en nuevas habilidades seguras con puntos de aprobación preservados.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> en el <em>Creador de habilidades</em>, para instalar el comando <code>$creaflujo</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Crea e instala una skill personal llamada CreaFlujo. Debe activarse cuando el usuario quiera convertir un proceso repetitivo propio en una skill reutilizable. Antes de crearla debe entrevistar al usuario sobre: resultado y desencadenantes; archivos o entradas iniciales; pasos en orden; aplicaciones, complementos o servicios implicados; decisiones que puede tomar sola; acciones que requieren aprobación; resultado final; forma de verificarlo; fallos habituales; dependencias; privacidad y credenciales. Solo debe preguntar lo que cambie materialmente el flujo y, si es largo, hacerlo en rondas cortas. Después debe devolver el proceso ordenado, separar los pasos de solo lectura de las acciones que modifican sistemas externos y señalar contradicciones o riesgos. No construirá la nueva skill hasta que el usuario apruebe ese diseño. Una vez aprobado, utilizará las herramientas de creación de skills para generar una habilidad de alcance estrecho, con desencadenantes claros, dependencias declaradas y todos los puntos de aprobación preservados. Nunca almacenará contraseñas, claves o tokens en instrucciones compartibles. Si falta una dependencia, se detendrá en vez de fingir éxito. Debe probar la skill con un ejemplo seguro que no envíe, publique, compre, elimine ni exponga información privada y mostrar el nombre, archivos, dependencias y resultado de la prueba. Instálala con el nombre visible CreaFlujo y el identificador creaflujo.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-probar-verifica">
+    <h3>6. Probar Verifica con un borrador <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de demostración que invoca <code>$verifica</code> sobre un borrador adjunto para auditar disponibilidad, precios, compatibilidad y funcionamiento.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después de instalar Verifica, en un chat limpio con el archivo <code>02_borrador_para_verificar.txt</code> adjunto.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$verifica Revisa el archivo adjunto antes de que lo publique. Comprueba todas las afirmaciones sobre disponibilidad, funcionamiento, precios y compatibilidad. Prioriza documentación oficial y devuélveme primero los errores que podrían hacer que el vídeo quede desactualizado. Después dame las frases corregidas listas para sustituir.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-probar-relevo">
+    <h3>7. Probar Relevo migrando un proyecto <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de demostración que invoca <code>$relevo</code> para generar un paquete autónomo que permita continuar un proyecto en Claude.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después de instalar Relevo, en un chat con los archivos <code>NEON-RIFT-base.html</code> y <code>RELEVO-CLAUDE-ejemplo.md</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$relevo Prepara un paquete para continuar este proyecto en Claude. El siguiente objetivo es corregir los controles táctiles que se superponen con la interfaz en móvil y la aparición de naves duplicadas tras varios reinicios. Conserva el diseño, las mecánicas, la puntuación y el aumento progresivo de velocidad. Indica todos los archivos que debo volver a adjuntar y termina con una instrucción lista para copiar.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-probar-cuestioname">
+    <h3>8. Probar Cuestióname (solicitud inicial) <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> solicitud de ejemplo que activa la entrevista previa de <code>$cuestioname</code> antes de permitir que la IA construya nada.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después de instalar Cuestióname, para comprobar que respeta la pausa obligatoria.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$cuestioname Quiero crear una herramienta que analice mis vídeos y me diga qué debería publicar después.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-confirmar-cuestioname">
+    <h3>9. Confirmación tras Cuestióname <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de cierre que se envía después de que Cuestióname presente su resumen de ejecución, para autorizar el inicio del trabajo.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> solo cuando el resumen de <em>Cuestióname</em> refleje tus decisiones y estés de acuerdo con el alcance propuesto.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Confirmo el resumen. Puedes empezar a construir la primera versión siguiendo exactamente esas decisiones.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-probar-multiplica">
+    <h3>10. Probar Multiplica con una clase <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de demostración que invoca <code>$multiplica</code> para transformar una transcripción de clase en un paquete completo de estudio (apuntes, esquema, tarjetas, examen, soluciones, plan de repaso y ZIP).</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después de instalar Multiplica, en un chat con el archivo <code>Clase_Memoria_y_Aprendizaje_Transcripcion.txt</code> adjunto.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$multiplica Convierte esta clase en un paquete completo de estudio. Crea apuntes organizados, un esquema visual de una página, 30 tarjetas de estudio, un examen de práctica sin respuestas, un documento separado con las soluciones y un plan de repaso de siete días. Básate exclusivamente en la transcripción y utiliza sus marcas de tiempo como referencias. Entrégamelo todo también en un ZIP.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-creaflujo-paso-1">
+    <h3>11. CreaFlujo — Paso 1: definir el proceso <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> primer paso de la demostración de CreaFlujo: describe a la meta-habilidad el proceso repetitivo de revisión de patrocinios que quieres empaquetar.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después de instalar CreaFlujo, como arranque del flujo guiado de 4 pasos.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$creaflujo Quiero convertir mi proceso de revisión de contenidos patrocinados en una habilidad. Recibirá el brief, el guion, un enlace de revisión y una tabla de seguimiento. Debe detectar incumplimientos, preparar el correo y actualizar el estado, pero nunca enviar nada sin mi aprobación.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-creaflujo-paso-2">
+    <h3>12. CreaFlujo — Paso 2: aprobar el diseño <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> segundo paso de la demostración: apruebas el diseño devuelto por CreaFlujo y solicitas la creación efectiva de la nueva habilidad conservando los puntos de aprobación.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> justo después de revisar el diseño que CreaFlujo propone en el Paso 1.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Apruebo este diseño. Crea e instala la habilidad con el nombre visible Revisa patrocinados y el identificador revisa-patrocinados. Conserva todos los puntos de aprobación y no ejecutes todavía ninguna acción externa.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-creaflujo-paso-3">
+    <h3>13. CreaFlujo — Paso 3: ejecutar la nueva habilidad <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> tercer paso de la demostración: se invoca la habilidad recién creada (<code>$revisa-patrocinados</code>) sobre cuatro archivos de prueba sin permitir cambios automáticos.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después del Paso 2, con los archivos <code>04_brief_novaflow.pdf</code>, <code>05_guion_integracion_novaflow.txt</code>, <code>06_enlace_revision_novaflow.txt</code> y <code>07_seguimiento_patrocinios.md</code> adjuntos.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$revisa-patrocinados Revisa este contenido patrocinado de NovaFlow utilizando los cuatro archivos adjuntos. No modifiques ni envíes nada sin mi aprobación.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-creaflujo-paso-4">
+    <h3>14. CreaFlujo — Paso 4: autorizar cambios <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> cuarto paso de la demostración: se autorizan explícitamente las correcciones propuestas, se prepara el borrador del correo y se actualiza el seguimiento sin enviar nada.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> después del Paso 3, una vez revisado el informe devuelto por la habilidad <code>$revisa-patrocinados</code>.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Apruebo las correcciones I1, I2 e I3 y la creación de las copias propuestas. Aplica únicamente esos cambios, realiza una segunda revisión y prepara el borrador del correo. Actualiza el seguimiento con el estado correcto, manteniendo como pendientes los elementos que no puedas verificar. No envíes ningún correo.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-remotion-astra">
+    <h3>15. Crear animación cinematográfica con Remotion <span class="tag plu">Complemento</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> prompt de demostración que usa el complemento <em>Remotion</em> para generar una animación cinematográfica de 15 segundos, partículas 3D, textos y render final MP4 1920 × 1080.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> con el complemento <em>Remotion</em> instalado, cuando quieras producir un vídeo programático a partir de una descripción en lenguaje natural.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">Utiliza Remotion para crear una animación cinematográfica de 15 segundos presentando GPT-6 Astra. Sobre un fondo negro, haz aparecer un núcleo 3D formado por partículas azules, conexiones y anillos de energía. Integra brevemente los textos «Investigación», «Programación», «Uso del ordenador» y «Trabajo profesional». Después, las partículas deben formar una gran letra A, explotar y revelar el título «GPT-6 ASTRA». Estilo tecnológico premium, movimientos de cámara, profundidad, destellos y final espectacular. Previsualiza, corrige cualquier error y renderiza un MP4 en 1920 x 1080 listo para YouTube.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-ejercicio-verifica">
+    <h3>16. Ejercicio — Auditoría de presupuesto con Verifica <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> solución del Ejercicio 1 de la pestaña PRÁCTICA: auditar un borrador comercial con precios y descuentos usando <code>$verifica</code>.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> cuando tengas un borrador con datos sensibles al tiempo (precios, condiciones de facturación, descuentos) y quieras validarlo contra tarifas oficiales.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$verifica Revisa el borrador comercial adjunto. Comprueba todos los precios, descuentos y condiciones de facturación contra las tarifas oficiales vigentes. Prioriza documentación oficial y devuélveme primero los errores de riesgo alto. Después dame las frases corregidas listas para sustituir.</pre>
+    </div>
+  </article>
+
+  <article class="promptCard" id="prompt-ejercicio-cuestioname">
+    <h3>17. Ejercicio — Entrevista previa con Cuestióname <span class="tag per">Personal</span></h3>
+    <p class="prompt-meta"><strong>Descripción:</strong> solución del Ejercicio 2 de la pestaña PRÁCTICA: usar <code>$cuestioname</code> para evitar trabajar a ciegas cuando el encargo es vago.</p>
+    <p class="prompt-meta"><strong>Cuándo usarlo:</strong> cuando un cliente o un compañero te pida un trabajo ambiguo ("diseña mi identidad gráfica", "hazme una app") sin más detalles.</p>
+    <div class="promptBox">
+      <div class="promptBox-head"><span>Prompt</span><button class="copyBtn" type="button">COPIAR</button></div>
+<pre class="promptBody">$cuestioname Quiero diseñar la identidad gráfica de una empresa. Entrevístame antes de proponer nada y ayúdame a definir el alcance del proyecto.</pre>
+    </div>
+  </article>
+
+  <div class="box info">
+    <span class="box-title">Consejo</span>
+    <p>Todos los prompts de esta biblioteca se copian tal cual, sin añadir ni quitar instrucciones. Los
+    puntos de aprobación explícita (envíos, publicaciones, borrados y modificaciones externas) están
+    preservados en su redacción original: no los elimines al adaptarlos.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: EJERCICIOS
+     ============================================================ -->
+<section class="panel" id="panel-ejercicios" role="tabpanel" aria-label="Ejercicios">
+  <h2 class="print-only">Ejercicios</h2>
+  <h1>Ejercicios prácticos por niveles</h1>
+  <p>Veintiún ejercicios para aprender haciendo, organizados en tres niveles de dificultad creciente.
+  Cada ejercicio sigue la misma estructura: primero el <strong>enunciado</strong> para que intentes
+  resolverlo por tu cuenta, y después la <strong>solución paso a paso</strong>, la explicación causal y
+  el error típico a evitar. Intenta responder antes de desplegar la solución.</p>
+
+  <div class="box info">
+    <span class="box-title">Cómo aprovechar esta pestaña</span>
+    <ul style="margin:.3rem 0 0;">
+      <li>Lee el enunciado con calma y formula tu respuesta antes de abrir la solución.</li>
+      <li>Compara tu razonamiento con el del tutorial; no basta con acertar la letra.</li>
+      <li>Fíjate sobre todo en el apartado <em>Por qué (Explicación causal)</em> y en el <em>Error típico a evitar</em>: ahí está el aprendizaje transferible.</li>
+      <li>Si fallas un ejercicio, vuelve a la pestaña CONCEPTOS o PROCEDIMIENTO antes de continuar.</li>
+    </ul>
+  </div>
+
+  <nav class="prompt-index" aria-label="Índice de ejercicios">
+    <h2>Índice de ejercicios</h2>
+    <ol>
+      <li class="pi-cat">Nivel Fácil (1–7)</li>
+      <li><a href="#ej-01">1. Conceptual — ¿Qué es una Habilidad?</a></li>
+      <li><a href="#ej-02">2. Verdadero/Falso — Tipos de Habilidades</a></li>
+      <li><a href="#ej-03">3. Emparejamiento — Comandos y formas de invocación</a></li>
+      <li><a href="#ej-04">4. Opción múltiple — Elegir la Habilidad adecuada</a></li>
+      <li><a href="#ej-05">5. Completar espacios — Descripción de Verifica</a></li>
+      <li><a href="#ej-06">6. Ordenamiento — Instalación de Habilidad personal</a></li>
+      <li><a href="#ej-07">7. Detección de errores — Prompt con fallo grave</a></li>
+
+      <li class="pi-cat">Nivel Medio (8–14)</li>
+      <li><a href="#ej-08">8. Caso práctico — Auditoría de un artículo comercial</a></li>
+      <li><a href="#ej-09">9. Diagnóstico de error — Cuestióname sin resumen</a></li>
+      <li><a href="#ej-10">10. Comparación — "Resumir" vs. Multiplica</a></li>
+      <li><a href="#ej-11">11. Selección de skill — Proceso semanal con CreaFlujo</a></li>
+      <li><a href="#ej-12">12. Redacción guiada — Prompt de Relevo</a></li>
+      <li><a href="#ej-13">13. Análisis de prompt defectuoso — Skill "Publica"</a></li>
+      <li><a href="#ej-14">14. Ordenamiento justificado — Pasos de instalación</a></li>
+
+      <li class="pi-cat">Nivel Difícil (15–21)</li>
+      <li><a href="#ej-15">15. Diseño de prompt — TriageSoporte</a></li>
+      <li><a href="#ej-16">16. Auditoría de prompt — Skill "Invierte"</a></li>
+      <li><a href="#ej-17">17. Integración de skills — Contratos de proveedores</a></li>
+      <li><a href="#ej-18">18. Análisis de riesgo — ConciliaFacturas</a></li>
+      <li><a href="#ej-19">19. Diseño con CreaFlujo — Newsletter mensual</a></li>
+      <li><a href="#ej-20">20. Evaluación comparativa — Visualize vs. skill personal</a></li>
+      <li><a href="#ej-21">21. Restricciones contradictorias — Vídeo Remotion con aprobación legal</a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================================
+       NIVEL FÁCIL
+       ============================================================ -->
+  <h2>Nivel Fácil</h2>
+  <p>Ejercicios introductorios para fijar vocabulario, tipos de habilidades y comandos de invocación.</p>
+
+  <article class="ejercicio" id="ej-01">
+    <h3>1. Conceptual — ¿Qué es una Habilidad? <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Conceptual</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Un compañero de equipo te dice: <em>"Una Habilidad no es más que un prompt
+      muy largo que escribo cada mañana"</em>. ¿Es correcta esa afirmación? Define con tus palabras qué es una
+      Habilidad y enumera al menos dos elementos que almacena.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>La afirmación es incorrecta.</strong><span class="why">Un prompt se escribe y se pierde tras la conversación.</span></li>
+          <li><strong>Una Habilidad es un conjunto reutilizable y preconfigurado de instrucciones</strong> que enseña a la IA a abordar una tarea de principio a fin.</li>
+          <li><strong>Almacena:</strong> procedimiento paso a paso, reglas de formato, fuentes prioritarias y límites de actuación (qué no puede hacer sin permiso).</li>
+          <li><strong>Se instala una vez</strong> y queda disponible bajo un comando o nombre visible.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>La clave es la persistencia: el prompt vive en la conversación; la Habilidad vive en el catálogo de la cuenta y se reutiliza. Llamarla "prompt largo" ignora la reutilización, el formato fijo y los límites de seguridad.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Confundir "instrucción extensa" con "Habilidad reutilizable". Corrige escribiendo: una Habilidad se instala una vez y se invoca muchas veces.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-02">
+    <h3>2. Verdadero/Falso — Tipos de Habilidades <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Verdadero/Falso con justificación obligatoria</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Indica si es verdadero o falso y justifica en dos líneas:
+      <em>"Todas las Habilidades de ChatGPT Work son personales y deben crearse desde cero por el usuario"</em>.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Falso.</strong></li>
+          <li><strong>Existen tres tipos:</strong> preinstaladas (las incorpora OpenAI), personales (las crea el usuario) y de complemento (llegan al instalar un plugin).</li>
+          <li><strong>Ejemplos:</strong> Visualize es preinstalada; Verifica es personal; Remotion es de complemento.</li>
+          <li><strong>Solo las personales</strong> requieren el Creador de habilidades.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El error surge de generalizar a partir del proceso más visible (instalar personales). La clasificación por origen es la que determina el método de obtención: catálogo, Creador o tienda de complementos.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Decir "todas son personales". Corrige memorizando el trío preinstalada / personal / complemento y asociando cada una a su origen.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-03">
+    <h3>3. Emparejamiento — Comandos y formas de invocación <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Emparejamiento</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Empareja cada Habilidad con su comando o forma de invocación:
+      <ul class="opciones">
+        <li><strong>A)</strong> Visualize &nbsp;·&nbsp; <strong>B)</strong> Verifica &nbsp;·&nbsp; <strong>C)</strong> Cuestióname &nbsp;·&nbsp; <strong>D)</strong> Multiplica &nbsp;·&nbsp; <strong>E)</strong> Remotion</li>
+        <li><strong>1)</strong> <code>$multiplica</code> &nbsp;·&nbsp; <strong>2)</strong> <code>@Visualize</code> &nbsp;·&nbsp; <strong>3)</strong> Automática (al instalar el complemento) &nbsp;·&nbsp; <strong>4)</strong> <code>$verifica</code> &nbsp;·&nbsp; <strong>5)</strong> <code>$cuestioname</code></li>
+      </ul>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>A → 2</strong> (preinstalada, se invoca con <code>@</code>).</li>
+          <li><strong>B → 4</strong> (personal, comando con <code>$</code>).</li>
+          <li><strong>C → 5</strong> (personal, comando con <code>$</code>).</li>
+          <li><strong>D → 1</strong> (personal, comando con <code>$</code>).</li>
+          <li><strong>E → 3</strong> (complemento, se activa sola).</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El prefijo revela el tipo: <code>@</code> para preinstaladas, <code>$</code> para personales y ausencia de comando para complementos. Memorizar el prefijo evita errores al invocar.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Escribir <code>$Visualize</code> o <code>@Remotion</code>. Corrige revisando siempre el tipo antes del símbolo.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-04">
+    <h3>4. Opción múltiple — Elegir la Habilidad adecuada <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Opción múltiple (4 alternativas, única correcta)</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Necesitas explicar a un cliente cómo varía el consumo de un servicio
+      según tres parámetros ajustables. ¿Qué Habilidad usarías y qué obtendrías?
+      <ul class="opciones">
+        <li><strong>A)</strong> Verifica; una tabla de auditoría con veredictos.</li>
+        <li><strong>B)</strong> Visualize; un simulador interactivo con controles deslizantes.</li>
+        <li><strong>C)</strong> Relevo; un paquete comprimido con decisiones del proyecto.</li>
+        <li><strong>D)</strong> Multiplica; un ZIP con apuntes y tarjetas de estudio.</li>
+      </ul>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>La tarea pide explorar variables y ver el efecto en directo.</strong></li>
+          <li><strong>Eso es exactamente lo que ofrece Visualize:</strong> paneles con controles, modos prefijados y recálculo en vivo.</li>
+          <li><strong>Verifica audita hechos, Relevo migra contextos y Multiplica genera kits de materiales:</strong> ninguno encaja.</li>
+        </ol>
+        <p><strong>Respuesta correcta: B) Visualize.</strong></p>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Visualize transforma teoría densa en simuladores manipulables; las demás resuelven problemas distintos (auditoría, migración, multiplicación de contenidos).</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Elegir Multiplica pensando "genera mucho contenido". Corrige preguntándote: ¿necesito interactividad o materiales derivados?</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-05">
+    <h3>5. Completar espacios — Descripción de Verifica <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Completar espacios</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Completa:
+      <em>"La Habilidad ______ extrae afirmaciones comprobables de un borrador, las clasifica como
+      Verificada, Necesita matiz, Incorrecta o ______, prioriza fuentes ______ y prohíbe ______ fuentes
+      cuando no existen"</em>.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li>La descripción corresponde a <strong>Verifica</strong> (comando <code>$verifica</code>).</li>
+          <li>Su cuarto veredicto es <strong>No verificable</strong>.</li>
+          <li>Prioriza <strong>fuentes primarias y oficiales</strong>.</li>
+          <li>Prohíbe <strong>inventar fuentes</strong>.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Su función es auditar con trazabilidad; sin veredictos claros y fuentes primarias, la auditoría perdería valor probatorio.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Poner "fuentes secundarias" o "blogs". Corrige recordando que si existe fuente primaria, un fragmento de buscador no cuenta como verificación.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-06">
+    <h3>6. Ordenamiento — Instalación de Habilidad personal <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Ordenamiento de pasos</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Ordena los pasos del procedimiento general de instalación de una
+      Habilidad personal:
+      <ul class="opciones">
+        <li>a) Confirmar la instalación pulsando Aprobar.</li>
+        <li>b) Abrir la app de escritorio de ChatGPT Work.</li>
+        <li>c) Abrir un chat nuevo y seleccionar el Creador de habilidades.</li>
+        <li>d) Probar la Habilidad en una conversación limpia.</li>
+        <li>e) Ir a Complementos → Habilidades.</li>
+        <li>f) Pegar el prompt completo y revisar los permisos solicitados.</li>
+      </ul>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>b</strong> → abrir la app (paso previo obligatorio).</li>
+          <li><strong>e</strong> → entrar al catálogo de Habilidades.</li>
+          <li><strong>c</strong> → abrir chat limpio y activar el Creador.</li>
+          <li><strong>f</strong> → pegar el prompt y revisar permisos.</li>
+          <li><strong>a</strong> → aprobar la instalación.</li>
+          <li><strong>d</strong> → validar en conversación nueva.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Cada paso depende del anterior: no se aprueba sin pegar, no se pega sin Creador, no se abre Creador sin catálogo. Probar al final valida que responde según lo especificado.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Probar antes de aprobar. Corrige recordando que la prueba se hace después de la instalación, en chat limpio.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-07">
+    <h3>7. Detección de errores — Prompt con fallo grave <span class="tag easy">Fácil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Detección visual de errores simples</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Revisa este fragmento de un prompt de creación de Habilidad personal e
+      identifica el fallo grave:
+      <em>"La skill se conectará a nuestro CRM usando la clave API sk-live-4821… y enviará los informes
+      automáticamente cada lunes sin intervención del usuario"</em>.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Contiene una credencial en el prompt</strong> (clave API), prohibido por la regla de oro.</li>
+          <li><strong>Además, envía informes sin punto de aprobación explícita</strong>, otra violación de seguridad.</li>
+          <li><strong>Corrección:</strong> sustituir la clave por un marcador de posición y añadir una pausa obligatoria de confirmación humana antes del envío.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Las Habilidades pueden compartirse o inspeccionarse; cualquier credencial incrustada queda expuesta. Y todo envío externo debe requerir permiso previo para evitar acciones no autorizadas.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Decir solo "falta la clave". Corrige señalando los dos fallos: credencial expuesta y ausencia de aprobación.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <!-- ============================================================
+       NIVEL MEDIO
+       ============================================================ -->
+  <h2>Nivel Medio</h2>
+  <p>Casos aplicados, diagnósticos y análisis de prompts reales con defectos moderados.</p>
+
+  <article class="ejercicio" id="ej-08">
+    <h3>8. Caso práctico — Auditoría de un artículo comercial <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Caso práctico aplicado</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Eres responsable de comunicación en una empresa de software. Vas a
+      publicar un artículo que afirma: <em>"Nuestra app funciona en iOS 15, Android 11 y Windows 10;
+      el precio mensual es 12 € y la versión Pro incluye 2 TB de almacenamiento"</em>. Antes de publicar
+      quieres evitar datos desactualizados o erróneos. ¿Qué Habilidad usas, con qué comando exacto y qué
+      le pides? Justifica por qué descartas las demás.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li>La tarea es auditar afirmaciones factuales contra fuentes oficiales → <strong>Verifica</strong>.</li>
+          <li><strong>Comando:</strong> <code>$verifica</code>.</li>
+          <li><strong>Se le pide:</strong> extraer afirmaciones comprobables, priorizar precios, compatibilidades y límites, contrastar contra documentación oficial y devolver tabla con veredicto, riesgo y corrección exacta.</li>
+          <li><strong>Se descartan:</strong> Multiplica (genera materiales, no audita), Relevo (migra contextos), Cuestióname (entrevista previa), Visualize (no aplica).</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Verifica es la única que produce una tabla de auditoría con veredictos y frases corregidas; su valor está en priorizar fuentes primarias oficiales frente a fragmentos secundarios.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Pedirle "revisa si está bien escrito". Corrige pidiendo explícitamente verificación factual con fuentes y corrección lista para sustituir.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-09">
+    <h3>9. Diagnóstico de error — Cuestióname sin resumen <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Diagnóstico de error</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Un compañero invoca <code>$cuestioname</code> y responde las cinco
+      preguntas. La IA recibe sus respuestas y, sin más, empieza a generar el código. Él esperaba que
+      pidiera confirmación. ¿Dónde está el problema y qué debe hacer?
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Cuestióname debe presentar un Resumen de Ejecución</strong> (objetivo, entregable, decisiones, restricciones, definición de terminado) y pedir confirmación.</li>
+          <li><strong>Solo tras esa confirmación puede empezar.</strong></li>
+          <li><strong>Si construyó sin resumen</strong>, probablemente el prompt se cortó o se instaló incompleto.</li>
+          <li><strong>Solución:</strong> reinstalar Cuestióname en un chat limpio verificando que contiene la frase que prohíbe crear archivos, investigar, editar, enviar o ejecutar hasta recibir confirmación.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El valor de Cuestióname es evitar trabajo desperdiciado por supuestos erróneos; sin resumen de ejecución, esa protección desaparece.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Culpar a la IA. Corrige revisando primero el prompt instalado, no la conversación.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-10">
+    <h3>10. Comparación — "Resumir" vs. Multiplica <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Comparación entre dos enfoques</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Debes preparar material de estudio a partir de una clase grabada de 90
+      minutos. Compara dos enfoques: <strong>(A)</strong> pedir "resúmeme esta transcripción" frente a
+      <strong>(B)</strong> invocar <code>$multiplica</code>. ¿Qué entregables obtienes en cada caso y qué
+      riesgos tiene cada uno?
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Enfoque A:</strong> un bloque de texto resumen, difícil de reutilizar; sin tarjetas, sin examen, sin plan de repaso.</li>
+          <li><strong>Enfoque B (modo Estudio):</strong> apuntes organizados, esquema visual de una página, 30 tarjetas CSV con dificultad y referencia, examen sin respuestas, documento separado de soluciones, plan de 7 días y ZIP.</li>
+          <li><strong>Riesgos de A:</strong> inconsistencia entre sesiones y pérdida de referencias temporales.</li>
+          <li><strong>Riesgos de B:</strong> que las respuestas del examen se filtren en la hoja de preguntas (el prompt lo prohíbe y obliga a segregación física); o que se inventen datos fuera de la fuente (el prompt también lo prohíbe).</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Multiplica no resume: transforma una fuente en varios materiales con funciones distintas, cada uno verificado contra la fuente original y con marcas de tiempo cuando existan.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Aceptar un único resumen como "kit". Corrige exigiendo entregables separados y comprobando que el examen no contiene las respuestas.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-11">
+    <h3>11. Selección de skill — Proceso semanal con CreaFlujo <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Selección de la skill correcta</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Tienes un proceso manual que repites cada semana: recibes un brief de
+      cliente, lo revisas contra una checklist, escribes un correo de respuesta y actualizas una hoja de
+      seguimiento. Quieres convertirlo en una Habilidad propia que no envíe nada sin tu permiso. ¿Qué
+      Habilidad usarías primero y qué esperas que haga antes de construir?
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li>Es un proceso repetitivo → <strong>CreaFlujo</strong> (<code>$creaflujo</code>).</li>
+          <li><strong>Antes de construir, CreaFlujo debe entrevistarte</strong> sobre: resultado y desencadenantes, entradas, pasos, aplicaciones implicadas, decisiones autónomas, acciones que requieren aprobación, resultado final, verificación, fallos habituales, dependencias y privacidad.</li>
+          <li><strong>Después debe devolver el proceso ordenado</strong>, separar pasos de solo lectura de los que modifican sistemas externos y señalar riesgos.</li>
+          <li><strong>No construirá la skill hasta que apruebes ese diseño.</strong></li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>CreaFlujo es una meta-habilidad que convierte procesos en skills seguras con puntos de aprobación preservados; construir sin entrevista produciría una skill incompleta o insegura.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Aprobar el primer borrador sin leer la separación lectura/modificación. Corrige verificando que ningún envío ocurre sin aprobación explícita.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-12">
+    <h3>12. Redacción guiada — Prompt de Relevo <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Redacción guiada de un prompt</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Redacta el prompt completo que usarías para que Relevo empaquete un
+      proyecto de desarrollo web que quieres continuar en otra IA. Tu objetivo: corregir el menú móvil y
+      un bug de sesión. Debes pedir explícitamente qué incluir y qué evitar.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li>Invocar <code>$relevo</code> indicando destino (otra IA o conversación nueva).</li>
+          <li>Especificar modo: <strong>Continuar</strong> (no Comparación independiente).</li>
+          <li>Incluir: objetivo, entregable, estado actual, decisiones aprobadas, restricciones, archivos y fuentes, trabajo pendiente, riesgos abiertos y siguiente acción exacta.</li>
+          <li>Pedir que indique qué archivos re-adjuntar y que termine con una instrucción lista para copiar.</li>
+          <li>Excluir credenciales, tokens y datos privados innecesarios.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El paquete es "autónomo y listo para pegar"; sin estructura fija, la IA de destino reinventaría el contexto y rompería decisiones ya aprobadas.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Incluir la respuesta o solución previa si quieres segunda opinión imparcial. Corrige usando Comparación independiente, que omite las conclusiones actuales.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-13">
+    <h3>13. Análisis de prompt defectuoso — Skill "Publica" <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Análisis de prompt defectuoso</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Analiza este prompt de creación y detecta los fallos:
+      <em>"Crea una skill llamada Publica. Debe publicar en mi blog WordPress los artículos que genere,
+      usando mi usuario admin y contraseña guardada. Ejecutará la publicación cuando termine de escribir.
+      También puede borrar posts antiguos si detecta duplicados."</em>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Fallo 1:</strong> credenciales en el prompt (usuario y contraseña).</li>
+          <li><strong>Fallo 2:</strong> acción externa sin aprobación (publicar automáticamente).</li>
+          <li><strong>Fallo 3:</strong> borrado automático (riesgo irreversible sin permiso).</li>
+          <li><strong>Fallo 4:</strong> alcance excesivo: mezcla publicar y borrar en una sola skill grande.</li>
+          <li><strong>Corrección:</strong> eliminar credenciales, añadir punto de aprobación explícita, separar lectura y modificación, y limitar el alcance.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El prompt otorga a la IA control operativo total sobre un sistema externo; cualquier error de detección (falsos duplicados) borraría contenido legítimo sin intervención humana.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Corregir solo la contraseña y dejar las acciones automáticas. Corrige también los borrados y los envíos sin permiso.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-14">
+    <h3>14. Ordenamiento justificado — Pasos de instalación <span class="tag mid">Media</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Ordenamiento de pasos con justificación</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Ordena los pasos de instalación de una Habilidad personal y justifica
+      cada transición:
+      <ul class="opciones">
+        <li>1) Abrir Creador de habilidades en chat limpio.</li>
+        <li>2) Probar en conversación nueva.</li>
+        <li>3) Ir a Complementos → Habilidades.</li>
+        <li>4) Revisar permisos solicitados.</li>
+        <li>5) Aprobar instalación.</li>
+        <li>6) Pegar prompt completo.</li>
+      </ul>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>3</strong> (catálogo) → punto de partida.</li>
+          <li><strong>1</strong> (Creador) → requiere el entorno del catálogo.</li>
+          <li><strong>6</strong> (pegar prompt) → el Creador interpreta la especificación.</li>
+          <li><strong>4</strong> (revisar permisos) → obligatorio antes de aprobar.</li>
+          <li><strong>5</strong> (aprobar) → registra la skill con nombre e identificador.</li>
+          <li><strong>2</strong> (probar) → valida comportamiento y formato.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El orden refleja dependencias técnicas: sin catálogo no hay Creador; sin prompt no hay permisos que revisar; sin aprobar no hay skill que probar.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Saltarse la revisión de permisos. Corrige leyéndolos siempre antes de pulsar Aprobar.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <!-- ============================================================
+       NIVEL DIFÍCIL
+       ============================================================ -->
+  <h2>Nivel Difícil</h2>
+  <p>Diseño completo de prompts, auditorías de riesgo, integración de skills y casos con restricciones contradictorias.</p>
+
+  <article class="ejercicio" id="ej-15">
+    <h3>15. Diseño de prompt — TriageSoporte <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Diseño de un prompt completo de creación de skill personal</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Diseña el prompt completo de una Habilidad personal llamada
+      <strong>TriageSoporte</strong> que clasifique tickets entrantes (facturación, técnico, comercial),
+      proponga respuestas y nunca envíe nada sin aprobación humana. Debe funcionar también cuando el
+      ticket no encaje en ninguna categoría. Incluye restricciones de seguridad y formato de salida.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Identidad y activación:</strong> definir cuándo se invoca (comando <code>$triagesoporte</code>), y aclarar que no interrumpe peticiones claras por iniciativa propia.</li>
+          <li><strong>Entrada:</strong> un ticket (texto o archivo) con campos mínimos: asunto, cuerpo, cliente, canal.</li>
+          <li><strong>Proceso:</strong> extraer categoría entre las tres permitidas o marcar Sin categoría; justificar la clasificación con fragmentos literales del ticket; para cada categoría, plantear un borrador de respuesta breve y otro extendido.</li>
+          <li><strong>Restricciones:</strong> no inventar datos del cliente, no prometer plazos que no figuren en el ticket, no incluir credenciales.</li>
+          <li><strong>Puntos de aprobación:</strong> presentar el borrador y detenerse; solo enviar si el usuario escribe confirmación explícita con la etiqueta exacta del borrador elegido.</li>
+          <li><strong>Formato de salida:</strong> tabla con (id, categoría, justificación, borrador propuesto, riesgo) + bloque final con la respuesta lista y una línea "Pendiente de aprobación: SÍ".</li>
+          <li><strong>Instalación:</strong> nombre visible TriageSoporte, identificador triagesoporte.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>La estructura funciona porque separa clasificación (lectura) de envío (modificación externa). El modo "Sin categoría" evita clasificaciones forzadas; el punto de aprobación bloquea envíos accidentales.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Definir "aprobar" de forma ambigua ("si el usuario está de acuerdo"). Mitiga exigiendo una confirmación textual explícita que cite el borrador elegido.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-16">
+    <h3>16. Auditoría de prompt — Skill "Invierte" <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Auditoría de un prompt defectuoso (detectar 3–5 fallos)</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Audita este prompt de creación de skill personal e identifica al menos
+      cuatro fallos, con su corrección:
+      <em>"Crea la skill Invierte. Se conectará a mi bróker con mi clave API 'xxxx' y ejecutará
+      automáticamente las compras que sugiera el análisis diario. Si el mercado cae más del 5 %,
+      venderá todo para protegerme. Guardará un registro de operaciones en mi hoja de cálculo.
+      También ajustará el importe según el saldo disponible sin preguntar."</em>
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Fallo 1 — Credencial en el prompt:</strong> clave API incrustada. <em>Corrección:</em> usar variables/secretos externos, nunca dentro del prompt.</li>
+          <li><strong>Fallo 2 — Ejecución automática de compras:</strong> sin aprobación explícita. <em>Corrección:</em> pausa obligatoria con confirmación del usuario por cada operación.</li>
+          <li><strong>Fallo 3 — Venta automática por umbral:</strong> regla irreversible disparada por una condición simple. <em>Corrección:</em> la condición puede alertar, no ejecutar; la venta requiere aprobación.</li>
+          <li><strong>Fallo 4 — Ajuste de importe sin preguntar:</strong> modifica parámetros económicos sin control. <em>Corrección:</em> proponer importe y pedir confirmación.</li>
+          <li><strong>Fallo 5 — Alcance excesivo:</strong> mezcla análisis, ejecución, riesgo y registro. <em>Corrección:</em> dividir en skills de alcance estrecho.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Cada fallo aumenta el radio de daño: la credencial filtra acceso, las acciones automáticas ejecutan sin humano en el bucle y el alcance amplio multiplica los puntos de fallo. La mitigación es separar lectura (análisis, alerta, propuesta) de modificación (compra, venta, ajuste).</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Corregir solo la credencial. Mitiga revisando todos los verbos de acción del prompt y marcando cuáles modifican sistemas externos.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-17">
+    <h3>17. Integración de skills — Contratos de proveedores <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Integración de dos o más skills en un flujo encadenado</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Diseña un flujo encadenado con <strong>Cuestióname → CreaFlujo → Relevo</strong>
+      para implantar una nueva operación en tu equipo: revisión de contratos de proveedores. Explica qué
+      hace cada skill, qué recibe y qué entrega, y dónde están los puntos de aprobación. Justifica por qué
+      este orden y no otro.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Cuestióname (<code>$cuestioname</code>):</strong> entrevista previa. Máximo 5 preguntas sobre objetivo, entradas (contratos, plantillas), restricciones legales, formato de salida y alcance de la primera versión. No construye nada hasta que confirmes el resumen de ejecución.</li>
+          <li><strong>CreaFlujo (<code>$creaflujo</code>):</strong> con el resumen aprobado como entrada, entrevista específica (dependencias, decisiones autónomas, acciones que requieren aprobación, fallos habituales, privacidad). Devuelve el proceso ordenado, separa lectura de modificación y espera aprobación del diseño antes de generar la skill <em>RevisaContratos</em>.</li>
+          <li><strong>Skill generada:</strong> clasifica cláusulas, señala desviaciones, propone comentarios; nunca firma, envía ni modifica el repositorio legal sin aprobación explícita.</li>
+          <li><strong>Relevo (<code>$relevo</code>):</strong> al cerrar la implantación, empaqueta el estado del proyecto (objetivo, decisiones aprobadas, archivos, riesgos, siguiente acción) en un único paquete autónomo para continuar en otra IA o en una conversación nueva. Modo Continuar.</li>
+          <li><strong>Puntos de aprobación:</strong> (a) resumen de Cuestióname, (b) diseño de CreaFlujo, (c) cada acción que modifique el repositorio, (d) confirmación de cierre antes del Relevo.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El orden refleja dependencias: sin especificación clara (Cuestióname) el diseño de CreaFlujo sería especulativo; sin diseño aprobado, la skill generada podría incorporar acciones automáticas; y sin proyecto terminado, Relevo no tendría estado que empaquetar. Invertir el orden produciría skills mal especificadas y paquetes de contexto vacíos.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Usar Relevo al principio para "pasar el contexto". Mitiga reservándolo para cierre o migración, no para arranque.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-18">
+    <h3>18. Análisis de riesgo — ConciliaFacturas <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Análisis de riesgo</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Un equipo quiere crear con CreaFlujo una skill <strong>ConciliaFacturas</strong>
+      que lea facturas de proveedores, las compare con pedidos, proponga incidencias y, "si todo cuadra",
+      marque la factura como aprobada en el ERP y avise por correo al proveedor. Identifica al menos cuatro
+      riesgos y propón blindajes concretos manteniendo la utilidad de la skill.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Riesgo 1 — Aprobación automática en ERP:</strong> una clasificación errónea marcaría como válida una factura con discrepancias. <em>Blindaje:</em> la skill solo propone el estado "Aprobada"; la marca en el ERP queda como acción pendiente de aprobación humana.</li>
+          <li><strong>Riesgo 2 — Envío automático de correo al proveedor:</strong> comunica decisiones no confirmadas. <em>Blindaje:</em> la skill genera el borrador del correo y lo deja listo; nunca lo envía.</li>
+          <li><strong>Riesgo 3 — Umbral difuso "si todo cuadra":</strong> criterio ambiguo que produce falsos positivos. <em>Blindaje:</em> definir explícitamente tolerancias (importe, IVA, fecha, líneas) y devolverlas en la salida.</li>
+          <li><strong>Riesgo 4 — Datos sensibles en la skill compartida:</strong> números de cuenta, IBAN, credenciales del ERP. <em>Blindaje:</em> prohibir credenciales en el prompt; usar referencias externas.</li>
+          <li><strong>Riesgo 5 — Dependencias no declaradas:</strong> si el ERP no está accesible, la skill podría fingir éxito. <em>Blindaje:</em> si falta una dependencia, la skill se detiene y lo indica.</li>
+          <li><strong>Salida esperada:</strong> tabla con factura, pedido, desviaciones, tolerancia usada, propuesta de estado y borrador de correo, todo pendiente de aprobación.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El riesgo no está en la lectura, sino en la escritura (marcar en ERP, enviar correo). Separar "leer y proponer" de "escribir y enviar" preserva el valor (detección temprana de incidencias) sin exponer a la organización a acciones irreversibles.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Aceptar "solo si todo cuadra" como salvaguarda. Mitiga sustituyendo el criterio vago por tolerancias numéricas explícitas más aprobación humana.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-19">
+    <h3>19. Diseño con CreaFlujo — Newsletter mensual <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Diseño de un flujo con CreaFlujo</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Diseña, paso a paso, cómo usarías <code>$creaflujo</code> para empaquetar
+      el proceso de "preparar la newsletter mensual" de un equipo de marketing. Debes incluir: entrevista
+      previa, propuesta de diseño, separación lectura/modificación, generación de la skill final y prueba
+      segura. Justifica cada decisión.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Invocación:</strong> <code>$creaflujo Quiero convertir el proceso mensual de newsletter en una skill. Hoy hago: recojo temas del equipo, redacto 6 secciones, reviso cifras, paso maqueta a la herramienta de envío y programo el envío.</code></li>
+          <li><strong>Entrevista (CreaFlujo):</strong> desencadenante (día 1 de mes), entradas (briefs, métricas del mes anterior), pasos en orden, herramientas implicadas (editor, herramienta de envío, hoja de seguimiento), decisiones autónomas (selección de temas), acciones que requieren aprobación (envío y programación), resultado final, verificación (checklist de calidad), fallos habituales (cifras desactualizadas), dependencias (acceso a métricas), privacidad (datos de suscriptores).</li>
+          <li><strong>Diseño devuelto:</strong> proceso ordenado con marca explícita de pasos de solo lectura (recopilar, redactar, revisar cifras) y acciones que modifican sistemas externos (maquetar en la herramienta, programar envío). Señala contradicciones: "reviso cifras" y "recopilo temas" pueden ocurrir en paralelo.</li>
+          <li><strong>Aprobación del diseño:</strong> confirmas y solicitas crear la skill <em>PreparaNewsletter</em> con identificador <code>prepara-newsletter</code>, conservando todos los puntos de aprobación y sin credenciales almacenadas.</li>
+          <li><strong>Prueba segura:</strong> se ejecuta sobre un mes ficticio con datos de prueba; no se programa ningún envío real; se revisan entregables: borrador, checklist, métricas y propuesta de programación.</li>
+          <li><strong>Salida mostrada:</strong> nombre, archivos generados, dependencias detectadas y resultado de la prueba.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>La entrevista captura el conocimiento tácito del proceso; la separación lectura/modificación convierte un flujo manual en uno auditable; y la prueba segura evita que la skill recién creada dispare envíos reales en su estreno.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Diseñar una skill "gigante" que abarque newsletter, redes y blog. Mitiga creando skills de alcance estrecho, una por proceso.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-20">
+    <h3>20. Evaluación comparativa — Visualize vs. skill personal <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Evaluación comparativa de dos estrategias</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Un analista necesita producir un simulador para explicar cómo afectan
+      tres variables a un sistema complejo. Propone dos estrategias: <strong>(A)</strong> crear una
+      Habilidad personal desde el Creador con el prompt "genera simuladores interactivos";
+      <strong>(B)</strong> usar directamente <code>@Visualize</code> con una especificación detallada del
+      simulador. Compara ambas, indica cuál elegir y en qué condiciones la otra podría ser preferible.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Estrategia A — Habilidad personal "genera simuladores":</strong> alcance demasiado amplio y genérico; difícil de verificar; puede solaparse con capacidades ya existentes; riesgo de producir un simulador inconsistente entre sesiones. No aporta control específico sobre la Habilidad preinstalada.</li>
+          <li><strong>Estrategia B — @Visualize:</strong> función oficial, orientada exactamente a ese tipo de salida; admite especificación precisa: variables, rangos, modos prefijados (eficiente / equilibrado / rápido), métricas que se recalculan en directo, estilo visual. Coherente con el propósito de la preinstalada.</li>
+          <li><strong>Recomendación:</strong> elegir B. La personalización concreta del caso se logra en la especificación del prompt de uso, no creando una skill nueva.</li>
+          <li><strong>Cuándo A podría ser preferible:</strong> si el analista produce muchos simuladores con un formato corporativo fijo (colores, plantilla, KPIs obligatorios) y quiere garantizar consistencia entre autores. Incluso entonces, A debe ser una skill estrecha ("Simulador corporativo X") y no genérica.</li>
+          <li><strong>Verificación:</strong> B es contrastable contra el propósito declarado de Visualize; A no tiene forma clara de validarse porque su alcance es indefinido.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>Las Habilidades personales aportan valor cuando especializan un procedimiento repetible; cuando el problema ya está resuelto por una preinstalada, crear una personal añade coste de mantenimiento sin beneficio proporcional.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Duplicar funciones existentes por inercia ("todo lo envuelvo en una skill"). Mitiga preguntando antes: ¿ya existe una Habilidad o complemento oficial que cubra esto?</p></div>
+      </div>
+    </details>
+  </article>
+
+  <article class="ejercicio" id="ej-21">
+    <h3>21. Restricciones contradictorias — Vídeo Remotion con aprobación legal <span class="tag hard">Difícil</span></h3>
+    <p class="meta"><strong>Tipo:</strong> Caso con restricciones contradictorias</p>
+    <div class="enunciado">
+      <strong>Enunciado:</strong> Un equipo creativo pide producir un vídeo MP4 de 20 segundos con
+      Remotion para una campaña sujeta a aprobación legal obligatoria antes de publicarse. Restricciones:
+      <strong>(a)</strong> el vídeo no puede publicarse ni compartirse fuera del equipo hasta que legal lo
+      apruebe; <strong>(b)</strong> el equipo tiene prisa y quiere previsualizaciones rápidas;
+      <strong>(c)</strong> el complemento Remotion no aparece en la cuenta de uno de los miembros;
+      <strong>(d)</strong> no deben introducirse credenciales ni datos de clientes en los prompts. Diseña
+      el flujo y resuelve las tensiones entre rapidez y control.
+    </div>
+
+    <details>
+      <summary>Ver solución paso a paso</summary>
+      <div class="solucion-body">
+        <ol class="steps">
+          <li><strong>Requisito de Remotion (c):</strong> el miembro sin el complemento no debe intentar simular renderizado con prompts simples. La producción se concentra en la cuenta que sí lo tiene; el resto colabora en briefs y revisión.</li>
+          <li><strong>Rapidez vs control (a+b):</strong> Remotion permite previsualizar y corregir antes de renderizar. Se explota esa capacidad: iterar previsualizaciones internas no constituye publicación.</li>
+          <li><strong>Punto de aprobación legal:</strong> antes de renderizar el MP4 final (o antes de exportar a un canal compartido) se inserta una pausa humana. El render se considera "entregable interno"; cualquier distribución externa queda bloqueada hasta aprobación.</li>
+          <li><strong>Credenciales y datos (d):</strong> la especificación del prompt describe escena, textos, estilo, duración y resolución, sin credenciales ni datos personales de clientes. Las referencias a marcas usan placeholders.</li>
+          <li><strong>Integración con Relevo:</strong> al terminar la primera previsualización, un <code>$relevo</code> en modo Continuar empaqueta el estado (composición, textos aprobados, correcciones pendientes, decisiones legales abiertas) para que otro miembro del equipo pueda retomar sin perder contexto, excluyendo cualquier dato sensible.</li>
+          <li><strong>Formato de entrega:</strong> versión de previsualización marcada como "borrador interno — no distribuir", junto a un checklist de publicación que solo se activa tras la aprobación legal.</li>
+          <li><strong>Verificación:</strong> la composición queda editable para ajustes de color, texto o velocidad sin rehacer la animación, lo que reduce iteraciones costosas.</li>
+        </ol>
+        <div class="box info"><span class="box-title">Por qué (Explicación causal)</span><p>El conflicto entre rapidez y control se resuelve separando el ciclo interno de iteración (previsualizar, corregir) del punto único de publicación (render final + aprobación legal). Así se preserva velocidad de iteración sin exponer la marca a publicaciones no autorizadas. El miembro sin Remotion queda integrado vía Relevo, evitando la tentación de fingir capacidades ausentes.</p></div>
+        <div class="box warn"><span class="box-title">Error típico a evitar</span><p>Renderizar el MP4 final cuanto antes para "tener algo que enseñar", saltándose la aprobación legal. Mitiga etiquetando cualquier salida previa como borrador interno y bloqueando la exportación final con un punto de aprobación explícito.</p></div>
+      </div>
+    </details>
+  </article>
+
+  <div class="box ok">
+    <span class="box-title">Cierre</span>
+    <p>Si has completado los 21 ejercicios comprendiendo el <em>por qué</em> y los <em>errores típicos</em>,
+    estás preparado para diseñar, instalar y usar tus propias Habilidades en ChatGPT Work con criterio
+    profesional y salvaguardas de seguridad.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     PANEL: CRÉDITOS  (SIEMPRE EL ÚLTIMO)
+     ============================================================ -->
+<section class="panel" id="panel-creditos" role="tabpanel" aria-label="Créditos">
+  <h2 class="print-only">Créditos</h2>
+
+  <div class="credit-hero">
+    <svg class="svg-hero" viewBox="0 0 400 320" role="img"
+         aria-label="Animación: siete habilidades orbitando alrededor del núcleo ChatGPT Work"
+         xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="heroGlowB" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
+          <stop offset="65%" stop-color="#1e3a5f" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#1e3a5f" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="heroCoreB" cx="50%" cy="38%" r="65%">
+          <stop offset="0%" stop-color="#7dd3fc"/>
+          <stop offset="55%" stop-color="#1e3a5f"/>
+          <stop offset="100%" stop-color="#0f172a"/>
+        </radialGradient>
+        <linearGradient id="heroRingB" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#38bdf8"/>
+          <stop offset="100%" stop-color="#1e3a5f"/>
+        </linearGradient>
+      </defs>
+
+      <rect x="0" y="0" width="400" height="320" rx="16" fill="#0a0e1a"/>
+      <circle cx="200" cy="160" r="120" fill="url(#heroGlowB)">
+        <animate attributeName="r" values="105;138;105" dur="5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.65;1;0.65" dur="5s" repeatCount="indefinite"/>
+      </circle>
+
+      <g>
+        <ellipse cx="200" cy="160" rx="115" ry="115" fill="none"
+                 stroke="url(#heroRingB)" stroke-width="1.5" stroke-dasharray="5 8" opacity="0.85"/>
+        <animateTransform attributeName="transform" type="rotate"
+                          from="0 200 160" to="360 200 160" dur="40s" repeatCount="indefinite"/>
+      </g>
+
+      <g>
+        <ellipse cx="200" cy="160" rx="76" ry="76" fill="none"
+                 stroke="#1e3a5f" stroke-width="1.2" stroke-dasharray="3 6"/>
+        <animateTransform attributeName="transform" type="rotate"
+                          from="360 200 160" to="0 200 160" dur="26s" repeatCount="indefinite"/>
+      </g>
+
+      <circle cx="200" cy="160" r="46" fill="url(#heroCoreB)" stroke="#38bdf8" stroke-width="1.6">
+        <animate attributeName="r" values="44;48;44" dur="3.5s" repeatCount="indefinite"/>
+      </circle>
+      <text x="200" y="156" text-anchor="middle" font-size="14" font-weight="700"
+            fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">ChatGPT</text>
+      <text x="200" y="174" text-anchor="middle" font-size="13" font-weight="600"
+            fill="#7dd3fc" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">Work</text>
+
+      <g>
+        <animateTransform attributeName="transform" type="rotate"
+                          from="0 200 160" to="360 200 160" dur="24s" repeatCount="indefinite"/>
+
+        <g stroke="#38bdf8" stroke-width="1" opacity="0.35">
+          <line x1="200" y1="160" x2="315" y2="160"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="271.7" y2="249.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0.35s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="174.4" y2="272.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="0.7s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="96.4" y2="209.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.05s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="96.4" y2="110.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.4s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="174.4" y2="47.9"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="1.75s" repeatCount="indefinite"/></line>
+          <line x1="200" y1="160" x2="271.7" y2="70.1"><animate attributeName="opacity" values="0.15;0.75;0.15" dur="2.4s" begin="2.1s" repeatCount="indefinite"/></line>
+        </g>
+
+        <circle cx="315" cy="160" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="315" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">1<animateTransform attributeName="transform" type="rotate" from="360 315 160" to="0 315 160" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="271.7" cy="249.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="271.7" y="254.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">2<animateTransform attributeName="transform" type="rotate" from="360 271.7 249.9" to="0 271.7 249.9" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="174.4" cy="272.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="174.4" y="277.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">3<animateTransform attributeName="transform" type="rotate" from="360 174.4 272.1" to="0 174.4 272.1" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="96.4" cy="209.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="96.4" y="214.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">4<animateTransform attributeName="transform" type="rotate" from="360 96.4 209.9" to="0 96.4 209.9" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="96.4" cy="110.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="96.4" y="115.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">5<animateTransform attributeName="transform" type="rotate" from="360 96.4 110.1" to="0 96.4 110.1" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="174.4" cy="47.9" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="174.4" y="52.9" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">6<animateTransform attributeName="transform" type="rotate" from="360 174.4 47.9" to="0 174.4 47.9" dur="24s" repeatCount="indefinite"/></text>
+
+        <circle cx="271.7" cy="70.1" r="15" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+        <text x="271.7" y="75.1" text-anchor="middle" font-size="13" font-weight="700" fill="#e2e8f0" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">7<animateTransform attributeName="transform" type="rotate" from="360 271.7 70.1" to="0 271.7 70.1" dur="24s" repeatCount="indefinite"/></text>
+      </g>
+    </svg>
+
+    <h1 class="credit-name">Rubén Sbarsky</h1>
+    <div class="credit-role">Autor del tutorial</div>
+    <div class="credit-date">01/10/2026 — 09:15:00</div>
+  </div>
+
+  <hr>
+
+  <h2>Sobre este tutorial</h2>
+  <p>Tutorial interactivo en un único archivo HTML, sin dependencias externas ni conexión a Internet.
+  Reúne el contenido de la guía <em>Las 7 Habilidades de ChatGPT Work</em> y lo reorganiza en formato
+  pedagógico paso a paso.</p>
+
+  <h2>Contenido</h2>
+  <ul>
+    <li>Conceptos fundamentales sobre ChatGPT Work y las habilidades.</li>
+    <li>Procedimiento general de instalación y configuración.</li>
+    <li>Las 7 habilidades: Visualize, Verifica, Relevo, Cuestióname, Multiplica, CreaFlujo y Remotion.</li>
+    <li>Ejercicios prácticos con solución explicada.</li>
+    <li>Batería de 21 ejercicios por niveles (Fácil, Medio, Difícil) con explicación causal y errores típicos.</li>
+    <li>Errores frecuentes, reglas de seguridad y preguntas frecuentes.</li>
+    <li>Biblioteca de prompts con botón COPIAR.</li>
+    <li>Glosario y fuentes consultadas.</li>
+  </ul>
+
+  <h2>Aviso legal</h2>
+  <p>Este material es educativo. Las marcas, productos y servicios mencionados pertenecen a sus respectivos
+  propietarios. La disponibilidad de las funciones descritas puede variar según el plan, la región y las
+  políticas del espacio de trabajo.</p>
+</section>
+
+</main>
+
+<button class="to-top" id="toTop" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+<script>
+(function(){
+  "use strict";
+
+  function $(sel, ctx){ return (ctx||document).querySelector(sel); }
+  function $$(sel, ctx){ return Array.prototype.slice.call((ctx||document).querySelectorAll(sel)); }
+
+  var LS = {
+    get:function(k, def){ try{ var v = localStorage.getItem(k); return v === null ? def : v; }catch(e){ return def; } },
+    set:function(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  };
+
+  /* ===== PESTAÑAS ===== */
+  var tabs = $$('.tab');
+  var panels = $$('.panel');
+
+  function activateTab(name, scroll){
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+    panels.forEach(function(p){ p.classList.toggle('active', p.id === 'panel-' + name); });
+    LS.set('tut_tab', name);
+    if(scroll){ window.scrollTo({ top:0, behavior:'smooth' }); }
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ activateTab(t.dataset.tab, true); });
+  });
+
+  var savedTab = LS.get('tut_tab', 'inicio');
+  if(savedTab && document.getElementById('panel-' + savedTab)){ activateTab(savedTab, false); }
+
+  /* ===== TEMA ===== */
+  var btnTheme = $('#btnTheme');
+  function applyTheme(theme){
+    document.body.classList.toggle('light', theme === 'light');
+    btnTheme.textContent = theme === 'light' ? '☀ Tema' : '🌙 Tema';
+  }
+  var currentTheme = LS.get('tut_theme', 'dark');
+  applyTheme(currentTheme);
+  btnTheme.addEventListener('click', function(){
+    currentTheme = document.body.classList.contains('light') ? 'dark' : 'light';
+    applyTheme(currentTheme); LS.set('tut_theme', currentTheme);
+  });
+
+  /* ===== FUENTE ===== */
+  var fontSizes = [14, 15, 16, 17, 18, 19, 20];
+  var fontIndex = parseInt(LS.get('tut_font', '2'), 10);
+  if(isNaN(fontIndex) || fontIndex < 0 || fontIndex >= fontSizes.length){ fontIndex = 2; }
+  function applyFont(){
+    document.documentElement.style.fontSize = fontSizes[fontIndex] + 'px';
+    LS.set('tut_font', String(fontIndex));
+  }
+  applyFont();
+  $('#btnFontUp').addEventListener('click', function(){ if(fontIndex < fontSizes.length - 1){ fontIndex++; applyFont(); } });
+  $('#btnFontDown').addEventListener('click', function(){ if(fontIndex > 0){ fontIndex--; applyFont(); } });
+
+  /* ===== COPIAR — implementación robusta obligatoria ===== */
+  function legacyCopy(text){
+    return new Promise(function(resolve, reject){
+      var ta = null;
+      var prevActive = null;
+      try{
+        prevActive = document.activeElement;
+        ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.setAttribute('aria-hidden', 'true');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.left = '-9999px';
+        ta.style.width = '2em';
+        ta.style.height = '2em';
+        ta.style.padding = '0';
+        ta.style.border = 'none';
+        ta.style.outline = 'none';
+        ta.style.boxShadow = 'none';
+        ta.style.background = 'transparent';
+
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try{ ta.setSelectionRange(0, ta.value.length); }catch(_e){}
+
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        ta = null;
+
+        if(prevActive && typeof prevActive.focus === 'function'){
+          try{ prevActive.focus(); }catch(_e){}
+        }
+
+        ok ? resolve() : reject(new Error('execCommand("copy") devolvió false'));
+      }catch(err){
+        if(ta && ta.parentNode){ try{ ta.parentNode.removeChild(ta); }catch(_e){} }
+        reject(err);
+      }
+    });
+  }
+
+  function copyText(text){
+    if(navigator.clipboard
+       && window.isSecureContext
+       && typeof navigator.clipboard.writeText === 'function'){
+      return navigator.clipboard.writeText(text).catch(function(){ return legacyCopy(text); });
+    }
+    return legacyCopy(text);
+  }
+
+  function attachCopyHandler(btn){
+    btn.addEventListener('click', function(){
+      var box = btn.closest('.promptBox') || btn.closest('.code-wrap');
+      if(!box) return;
+      var body = box.querySelector('.promptBody') || box.querySelector('code');
+      if(!body) return;
+
+      if(!btn.dataset.origLabel){ btn.dataset.origLabel = btn.textContent; }
+      var text = body.textContent.replace(/^\s+|\s+$/g, '');
+
+      copyText(text).then(function(){
+        btn.textContent = '✓ COPIADO';
+        btn.classList.add('copied','done');
+        setTimeout(function(){
+          btn.textContent = btn.dataset.origLabel;
+          btn.classList.remove('copied','done');
+        }, 1800);
+      }).catch(function(){
+        try{
+          var range = document.createRange();
+          range.selectNodeContents(body);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }catch(e){}
+        btn.textContent = 'SELECCIONA Y COPIA';
+        setTimeout(function(){ btn.textContent = btn.dataset.origLabel; }, 2200);
+      });
+    });
+  }
+
+  $$('.copyBtn').forEach(attachCopyHandler);
+
+  /* ===== CHECKLISTS ===== */
+  var checkState = {};
+  try{ checkState = JSON.parse(LS.get('tut_checks', '{}')) || {}; }catch(e){ checkState = {}; }
+  var allChecks = $$('input[type="checkbox"][data-check]');
+
+  function saveChecks(){
+    var out = {};
+    allChecks.forEach(function(c){ out[c.dataset.check] = c.checked; });
+    LS.set('tut_checks', JSON.stringify(out));
+    updateAllProgress();
+  }
+
+  allChecks.forEach(function(c){
+    if(checkState[c.dataset.check]){ c.checked = true; }
+    c.addEventListener('change', saveChecks);
+  });
+
+  function updateProgressFor(listSelector, labelId, barId){
+    var list = document.querySelector(listSelector);
+    if(!list) return;
+    var boxes = $$('input[type="checkbox"]', list);
+    var total = boxes.length;
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    var label = document.getElementById(labelId);
+    var bar = document.getElementById(barId);
+    if(label) label.textContent = done + '/' + total + ' completado';
+    if(bar) bar.style.width = pct + '%';
+  }
+
+  function updateAllProgress(){
+    updateProgressFor('[data-checklist="requisitos"]', 'reqLabel', 'reqBar');
+    updateProgressFor('[data-checklist="practica"]', 'pracLabel', 'pracBar');
+    updateProgressFor('[data-checklist="seguridad"]', 'segLabel', 'segBar');
+    updateProgressFor('[data-checklist="aprendizaje"]', 'aprLabel', 'aprBar');
+  }
+  updateAllProgress();
+
+  /* ===== BUSCADOR ===== */
+  var searchInput = $('#searchInput');
+  var searchCount = $('#searchCount');
+
+  function clearHighlights(){
+    var marks = $$('mark.search-hl');
+    marks.forEach(function(m){
+      var parent = m.parentNode;
+      if(!parent) return;
+      parent.replaceChild(document.createTextNode(m.textContent), m);
+      parent.normalize();
+    });
+  }
+
+  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function highlight(term){
+    clearHighlights();
+    if(!term || term.length < 2){ return 0; }
+    var root = document.querySelector('main');
+    if(!root) return 0;
+
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(node){
+        if(!node.nodeValue || !node.nodeValue.trim()){ return NodeFilter.FILTER_REJECT; }
+        var p = node.parentNode;
+        if(!p || p.nodeType !== 1){ return NodeFilter.FILTER_REJECT; }
+        var tag = p.nodeName.toLowerCase();
+        if(tag === 'script' || tag === 'style' || tag === 'mark'){ return NodeFilter.FILTER_REJECT; }
+        if(p.closest && p.closest('.no-search')){ return NodeFilter.FILTER_REJECT; }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    var nodes = [];
+    while(walker.nextNode()){ nodes.push(walker.currentNode); }
+
+    var re = new RegExp(escapeRegExp(term), 'gi');
+    var count = 0;
+
+    nodes.forEach(function(node){
+      var text = node.nodeValue;
+      re.lastIndex = 0;
+      if(!re.test(text)){ return; }
+      re.lastIndex = 0;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      var m;
+      while((m = re.exec(text)) !== null){
+        if(m.index > last){ frag.appendChild(document.createTextNode(text.slice(last, m.index))); }
+        var mark = document.createElement('mark');
+        mark.className = 'search-hl';
+        mark.textContent = m[0];
+        frag.appendChild(mark);
+        last = m.index + m[0].length;
+        count++;
+        if(m[0].length === 0){ re.lastIndex++; }
+      }
+      if(last < text.length){ frag.appendChild(document.createTextNode(text.slice(last))); }
+      node.parentNode.replaceChild(frag, node);
+    });
+    return count;
+  }
+
+  var searchTimer = null;
+  searchInput.addEventListener('input', function(){
+    clearTimeout(searchTimer);
+    var term = searchInput.value.trim();
+    searchTimer = setTimeout(function(){
+      var n = highlight(term);
+      if(term.length < 2){ searchCount.textContent = ''; return; }
+      searchCount.textContent = n ? (n + ' ★') : '0';
+      if(n > 0){
+        var first = document.querySelector('mark.search-hl');
+        if(first){
+          var panel = first.closest('.panel');
+          if(panel && !panel.classList.contains('active')){
+            var name = panel.id.replace('panel-', '');
+            activateTab(name, false);
+          }
+          setTimeout(function(){
+            if(first.scrollIntoView){ first.scrollIntoView({ behavior:'smooth', block:'center' }); }
+          }, 60);
+        }
+      }
+    }, 280);
+  });
+
+  /* ===== PRINT ===== */
+  function openAllDetails(){
+    $$('details').forEach(function(d){
+      if(!d.open){ d.setAttribute('data-wasclosed', '1'); d.open = true; }
+    });
+  }
+  function restoreDetails(){
+    $$('details[data-wasclosed]').forEach(function(d){
+      d.open = false;
+      d.removeAttribute('data-wasclosed');
+    });
+  }
+  window.addEventListener('beforeprint', openAllDetails);
+  window.addEventListener('afterprint', restoreDetails);
+  $('#btnPrint').addEventListener('click', function(){
+    openAllDetails();
+    try{ window.print(); }catch(err){
+      alert('Tu navegador ha bloqueado la impresión. Abre este archivo directamente en el navegador (no dentro de una vista previa incrustada) y vuelve a intentarlo.');
+    }
+    setTimeout(restoreDetails, 800);
+  });
+
+  /* ===== SCROLL + TOP ===== */
+  var readProgress = $('#readProgress');
+  var toTop = $('#toTop');
+  function onScroll(){
+    var doc = document.documentElement;
+    var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+    var height = (doc.scrollHeight || 0) - (window.innerHeight || 0);
+    var pct = height > 0 ? (scrollTop / height) * 100 : 0;
+    readProgress.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    toTop.classList.toggle('show', scrollTop > 500);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+  toTop.addEventListener('click', function(){ window.scrollTo({ top:0, behavior:'smooth' }); });
+
+  /* ===== ESC en buscador ===== */
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.activeElement === searchInput){
+      searchInput.value = '';
+      highlight('');
+      searchCount.textContent = '';
+      searchInput.blur();
+    }
+  });
+
+  /* ===== Navegación del índice de prompts / ejercicios ===== */
+  document.addEventListener('click', function(e){
+    var link = e.target.closest ? e.target.closest('.prompt-index a[href^="#"]') : null;
+    if(!link) return;
+    var id = link.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if(!target) return;
+    e.preventDefault();
+
+    var panel = target.closest('.panel');
+    if(panel && !panel.classList.contains('active')){
+      var name = panel.id.replace('panel-', '');
+      activateTab(name, false);
+    }
+    requestAnimationFrame(function(){
+      if(target.scrollIntoView){ target.scrollIntoView({ behavior:'smooth', block:'start' }); }
+      try{ history.replaceState(null, '', '#' + id); }catch(_e){}
+    });
+  });
+
+})();
+</script>
+</body>
+</html>
